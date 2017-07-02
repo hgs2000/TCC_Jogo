@@ -14,10 +14,12 @@ public class Menu implements Screen {
     Texture title;
     Texture newGame, loadGame, options, exit;
     Music menuMusic;
-
+    private TCC game;
 
 
     public Menu(final TCC game) {
+        this.game = game;
+        
         batch = new SpriteBatch();
         title = new Texture("titulo.png");
         newGame = new Texture("newGame.png");
@@ -54,10 +56,10 @@ public class Menu implements Screen {
             }
             if (((x > 44) && (x < 346)) && ((y < h - 310) && (y > h - (360)))) {
                 //evento quando clica no botão options
-                TCC.tela = 1;
+                game.setScreen(new Options(game));
             }
             if (((x > 44) && (x < 346)) && ((y < h - 240) && (y > h - (290)))) {
-                //evento quando clica no botão options
+                //evento quando clica no botão exit
                 System.exit(0);
             }
 
