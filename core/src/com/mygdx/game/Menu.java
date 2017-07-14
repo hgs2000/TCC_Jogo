@@ -5,10 +5,15 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class Menu implements Screen {
+
+
 
     private SpriteBatch batch;
     Texture title;
@@ -16,10 +21,9 @@ public class Menu implements Screen {
     Music menuMusic;
     private TCC game;
 
-
     public Menu(final TCC game) {
         this.game = game;
-        
+
         batch = new SpriteBatch();
         title = new Texture("titulo.png");
         newGame = new Texture("newGame.png");
@@ -33,6 +37,7 @@ public class Menu implements Screen {
             menuMusic.play();
             TCC.op = false;
         }
+        
     }
 
     @Override
@@ -49,7 +54,7 @@ public class Menu implements Screen {
             int h = Gdx.graphics.getHeight();
             int w = Gdx.graphics.getWidth();
             if (((x > 44) && (x < 346)) && ((y < h - 450) && (y > h - (500)))) {
-                //evento quando clica no botão newGame
+                game.setScreen(new Test(game));
             }
             if (((x > 44) && (x < 346)) && ((y < h - 380) && (y > h - (430)))) {
                 //evento quando clica no botão loadGame

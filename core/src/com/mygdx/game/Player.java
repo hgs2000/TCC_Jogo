@@ -6,10 +6,5 @@ public class Player {
         mago, tank, ranger, rogue;
     }
    Item[] inventario;
-   
-    
-            
-    
-    
-    
+   Equipamento arma, belt, ring, energyS;
 }
