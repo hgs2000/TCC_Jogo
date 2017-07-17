@@ -7,6 +7,7 @@ import com.mygdx.game.TCC;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+                config.useGL30 = true;
                 config.title = "World Of World";
                 config.width = 1280;
                 config.height = 720;
