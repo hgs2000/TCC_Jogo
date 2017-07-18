@@ -13,7 +13,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
-public class Test implements Screen {
+public class test2 implements Screen {
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -23,17 +23,17 @@ public class Test implements Screen {
     private float tW, tH;
     Game game;
 
-    public Test(Game game) {
+    public test2(Game game) {
         this.game = game;
 
     }
 
     @Override
     public void show() {
-        map = new TmxMapLoader().load("map.tmx");
+        map = new TmxMapLoader().load("map2.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2);
+        camera.setToOrtho(false, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         camera.zoom = 5f;
         player = new PlayerInGame(new Sprite(new Texture("player.jpg")));
         player.setPosition(400, 150);
@@ -124,7 +124,7 @@ public class Test implements Screen {
             player.setY(oldY);
         }
         if(portal){
-            game.setScreen(new test2(game));
+            game.setScreen(new Test(game));
         }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
