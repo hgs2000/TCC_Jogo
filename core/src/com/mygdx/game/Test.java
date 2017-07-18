@@ -21,6 +21,7 @@ public class Test implements Screen {
     private PlayerInGame player;
     private TiledMapTileLayer cLayer;
     private float tW, tH;
+    private Sprite hud;
     Game game;
 
     public Test(Game game) {
@@ -40,6 +41,7 @@ public class Test implements Screen {
         cLayer = (TiledMapTileLayer) map.getLayers().get(0);
         tW = cLayer.getTileWidth();
         tH = cLayer.getTileHeight();
+        hud = new Sprite(new Texture("hud.png"));
     }
 
     private float oldX, oldY;
@@ -123,7 +125,7 @@ public class Test implements Screen {
             cY = false;
             player.setY(oldY);
         }
-        if(portal){
+        if (portal) {
             game.setScreen(new test2(game));
         }
 
@@ -132,7 +134,9 @@ public class Test implements Screen {
         renderer.setView(camera);
         renderer.render();
         renderer.getBatch().begin();
+
         player.draw(renderer.getBatch());
+        hud.draw(renderer.getBatch());
         renderer.getBatch().end();
     }
 
