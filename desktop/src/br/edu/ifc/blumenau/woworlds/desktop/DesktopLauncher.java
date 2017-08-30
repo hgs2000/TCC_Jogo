@@ -1,8 +1,8 @@
-package com.mygdx.game.desktop;
+package br.edu.ifc.blumenau.woworlds.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.mygdx.game.TCC;
+import br.edu.ifc.blumenau.woworlds.core.TCC;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

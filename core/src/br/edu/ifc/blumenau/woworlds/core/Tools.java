@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package br.edu.ifc.blumenau.woworlds.core;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;

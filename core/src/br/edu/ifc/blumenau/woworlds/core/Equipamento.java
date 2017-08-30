@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package br.edu.ifc.blumenau.woworlds.core;
 
 public class Equipamento {
     int id;
