@@ -1,0 +1,13 @@
+package br.edu.ifc.blumenau.woworlds.core.testes;
+
+import com.badlogic.gdx.ScreenAdapter;
+
+public class MenuScreen extends ScreenAdapter {
+
+    MenuScreen(WorldOfWorlds aThis) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
+
+}

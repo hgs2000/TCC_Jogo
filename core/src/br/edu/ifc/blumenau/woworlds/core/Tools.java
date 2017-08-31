@@ -5,7 +5,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 public class Tools {
 
-    public static TiledMap mapLoader(String path) {
+    public static TiledMap loadMap(String path) {
         return (new TmxMapLoader().load(path));
     }
 }

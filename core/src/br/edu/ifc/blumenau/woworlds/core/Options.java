@@ -7,7 +7,7 @@ package br.edu.ifc.blumenau.woworlds.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,15 +16,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  *
  * @author migue
  */
-public class Options implements Screen {
+public class Options extends ScreenAdapter {
 
-    private SpriteBatch batch;
+    private final SpriteBatch BATCH;
     Texture options, menu;
-    private TCC game;
+    private final TCC GAME;
 
     public Options(final TCC Game) {
-        this.game = Game;
-        batch = new SpriteBatch();
+        this.GAME = Game;
+        BATCH = new SpriteBatch();
         options = new Texture("options.png");
         menu = new Texture("menu.png");
     }
@@ -39,49 +39,16 @@ public class Options implements Screen {
             int w = Gdx.graphics.getWidth();
             if (((x > 44) && (x < 346)) && ((y < h - 170) && (y > h - (220)))) {
                 //evento quando clica no botão menu
-                game.setScreen(new Menu(game));
+                GAME.setScreen(new Menu(GAME));
             }
 
         }
-        
-        
-        
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        batch.draw(options, 30, Gdx.graphics.getHeight() - 100);
-        batch.draw(menu, 45, Gdx.graphics.getHeight() - 530);
-        batch.end();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
-
-    @Override
-    public void show() {
-
+        BATCH.begin();
+        BATCH.draw(options, 30, Gdx.graphics.getHeight() - 100);
+        BATCH.draw(menu, 45, Gdx.graphics.getHeight() - 530);
+        BATCH.end();
     }
 
 }

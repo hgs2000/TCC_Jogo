@@ -1,0 +1,40 @@
+
+woworlds_menu.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+titulo
+  rotate: false
+  xy: 1, 105
+  size: 600, 90
+  orig: 600, 90
+  offset: 0, 0
+  index: -1
+loadGame
+  rotate: false
+  xy: 1, 53
+  size: 300, 50
+  orig: 300, 50
+  offset: 0, 0
+  index: -1
+newGame
+  rotate: false
+  xy: 603, 145
+  size: 300, 50
+  orig: 300, 50
+  offset: 0, 0
+  index: -1
+options
+  rotate: false
+  xy: 1, 1
+  size: 300, 50
+  orig: 300, 50
+  offset: 0, 0
+  index: -1
+exit
+  rotate: false
+  xy: 303, 53
+  size: 150, 50
+  orig: 150, 50
+  offset: 0, 0
+  index: -1
