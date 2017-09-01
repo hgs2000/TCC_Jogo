@@ -22,6 +22,7 @@ public class Test implements Screen {
     private TiledMapTileLayer cLayer;
     private float tW, tH;
     private Sprite hud;
+    private Inimigo ini;
     Game game;
 
     public Test(Game game) {
@@ -42,6 +43,9 @@ public class Test implements Screen {
         tW = cLayer.getTileWidth();
         tH = cLayer.getTileHeight();
         hud = new Sprite(new Texture("hud.png"));
+
+        ini = new Inimigo(new Sprite(new Texture("ske.png")));
+        ini.setPosition(200, 200);
     }
 
     private float oldX, oldY;
@@ -128,13 +132,19 @@ public class Test implements Screen {
         if (portal) {
             game.setScreen(new test2(game));
         }
+        ini.move(player, delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            if(((ini.getX() - player.getX()) > 50) || ((ini.getX() - player.getX()) > -50)){
+                ini.setPosition(50, 50);
+            }
+        }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(camera);
         renderer.render();
         renderer.getBatch().begin();
-
+        ini.draw(renderer.getBatch());
         player.draw(renderer.getBatch());
         hud.draw(renderer.getBatch());
         renderer.getBatch().end();
