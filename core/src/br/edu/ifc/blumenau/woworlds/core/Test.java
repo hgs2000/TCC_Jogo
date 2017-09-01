@@ -1,4 +1,4 @@
-package br.edu.ifc.blumenau.woworlds.core;
+    package br.edu.ifc.blumenau.woworlds.core;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -36,7 +36,7 @@ public class Test implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2);
         camera.zoom = 5f;
-        player = new PlayerInGame(new Sprite(new Texture("player.jpg")));
+        player = new PlayerInGame(new Sprite(new Texture("player.png")));
         player.setPosition(400, 150);
         cLayer = (TiledMapTileLayer) map.getLayers().get(0);
         tW = cLayer.getTileWidth();
