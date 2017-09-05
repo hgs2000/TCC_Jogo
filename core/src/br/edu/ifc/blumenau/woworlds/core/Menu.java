@@ -14,6 +14,7 @@ public class Menu extends ScreenAdapter {
     Texture title;
     Texture new_game, load_game, options, exit;
     Music menu_music;
+    Player playerStatus;
     private final TCC GAME;
 
     public Menu(final TCC game) {
@@ -32,6 +33,9 @@ public class Menu extends ScreenAdapter {
             menu_music.play();
             TCC.op = false;
         }
+        playerStatus = new Player();
+        
+        
 
     }
 
@@ -44,7 +48,7 @@ public class Menu extends ScreenAdapter {
             int h = Gdx.graphics.getHeight();
             int w = Gdx.graphics.getWidth();
             if (((x > 44) && (x < 346)) && ((y < h - 450) && (y > h - (500)))) {
-                GAME.setScreen(new Test(GAME));
+                GAME.setScreen(new Test(GAME, playerStatus));
             }
             if (((x > 44) && (x < 346)) && ((y < h - 380) && (y > h - (430)))) {
                 //evento quando clica no botão loadGame

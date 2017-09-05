@@ -1,4 +1,4 @@
-    package br.edu.ifc.blumenau.woworlds.core;
+package br.edu.ifc.blumenau.woworlds.core;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -23,11 +23,12 @@ public class Test implements Screen {
     private float tW, tH;
     private Sprite hud;
     private Inimigo ini;
+    private Player ps;
     Game game;
 
-    public Test(Game game) {
+    public Test(Game game, Player ps) {
         this.game = game;
-
+        this.ps = ps;
     }
 
     @Override
@@ -130,12 +131,25 @@ public class Test implements Screen {
             player.setY(oldY);
         }
         if (portal) {
-            game.setScreen(new test2(game));
+            game.setScreen(new test2(game, ps));
         }
+
+        if (((ini.getX() - player.getX()) < 20) && ((ini.getX() - player.getX()) > -20)) {
+            if (((ini.getY() - player.getY()) < 20) && ((ini.getY() - player.getY()) > -20)) {
+                ps.life -= 1;
+            }
+        }
+        if (ps.life <= 0) {
+            player.setPosition(400, 150);
+            ps.life = 100;
+        }
+
         ini.move(player, delta);
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            if(((ini.getX() - player.getX()) > 50) || ((ini.getX() - player.getX()) > -50)){
-                ini.setPosition(50, 50);
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            if (((ini.getX() - player.getX()) < 50) && ((ini.getX() - player.getX()) > -50)) {
+                if (((ini.getY() - player.getY()) < 50) && ((ini.getY() - player.getY()) > -50)) {
+                    ini.setPosition(50, 50);
+                }
             }
         }
 

@@ -5,30 +5,35 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Inimigo extends Sprite {
 
-    public void move(Sprite player, float delta) {
-       
+    int vida = 5;
 
-            if (player.getX() > this.getX()) {
-                this.setX(this.getX() + (60 * 0.5f * delta));
-            }
-            if (player.getY() > this.getY()) {
-                this.setY(this.getY() + (60 * 0.5f * delta));
-            }
-            if (player.getX() < this.getX()) {
-                this.setX(this.getX() - (60 * 0.5f * delta));
-            }
-            if (player.getY() < this.getY()) {
-                this.setY(this.getY() - (60 * 0.5f * delta));
-            }
+    public void move(Sprite player, float delta) {
+
+        if (player.getX() > this.getX()) {
+            this.setX(this.getX() + (60 * 0.5f * delta));
+        }
+        if (player.getY() > this.getY()) {
+            this.setY(this.getY() + (60 * 0.5f * delta));
+        }
+        if (player.getX() < this.getX()) {
+            this.setX(this.getX() - (60 * 0.5f * delta));
+        }
+        if (player.getY() < this.getY()) {
+            this.setY(this.getY() - (60 * 0.5f * delta));
+        }
     }
 
     public Inimigo(Sprite sprite) {
         super(sprite);
-        
+
     }
-    
+
     public void draw(Batch batch) {
         super.draw(batch);
+    }
+
+    public void Dano() {
+        vida -= 1;
     }
 
 }
