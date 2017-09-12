@@ -50,10 +50,10 @@ public class Test implements Screen {
 
         ini = new Inimigo(new Sprite(new Texture("ske.png")));
         ini.setPosition(200, 200);
-        
+
         hpIni = new BitmapFont();
         hpIni.getData().setScale(0.5f, 0.5f);
-        
+
         hpPlayer = new BitmapFont();
         hpPlayer.getData().setScale(0.5f, 0.5f);
     }
@@ -64,14 +64,13 @@ public class Test implements Screen {
 
     @Override
     public void render(float delta) {
-      
-        
+
         oldX = player.getX();
         oldY = player.getY();
-        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             System.exit(0);
         }
-        if((Gdx.input.isKeyPressed(Input.Keys.U)) && (Gdx.input.isKeyPressed(Input.Keys.P))){
+        if ((Gdx.input.isKeyPressed(Input.Keys.U)) && (Gdx.input.isKeyPressed(Input.Keys.P))) {
             ps.life = 100000;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
@@ -169,8 +168,8 @@ public class Test implements Screen {
                 }
             }
         }
-        
-        if(ini.vida <= 0){
+
+        if (ini.vida <= 0) {
             ini.vida = 5;
             ini.setPosition(50, 50);
         }
@@ -181,8 +180,8 @@ public class Test implements Screen {
         renderer.render();
         renderer.getBatch().begin();
         ini.draw(renderer.getBatch());
-        hpIni.draw(renderer.getBatch(), Integer.toString(ini.vida), ini.getX() , ini.getY()+ 40);
-        hpPlayer.draw(renderer.getBatch(), Integer.toString(ps.life), player.getX() , player.getY()+ 40);
+        hpIni.draw(renderer.getBatch(), Integer.toString(ini.vida), ini.getX(), ini.getY() + 40);
+        hpPlayer.draw(renderer.getBatch(), Integer.toString(ps.life), player.getX(), player.getY() + 40);
         player.draw(renderer.getBatch());
         hud.draw(renderer.getBatch());
         renderer.getBatch().end();
