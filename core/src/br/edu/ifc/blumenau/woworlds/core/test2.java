@@ -21,11 +21,13 @@ public class test2 implements Screen {
     private PlayerInGame player;
     private TiledMapTileLayer cLayer;
     private float tW, tH;
+    private Inimigo ini;
+    private Player ps;
     Game game;
 
-    public test2(Game game) {
+    public test2(Game game, Player ps) {
         this.game = game;
-
+        this.ps = ps;
     }
 
     @Override
@@ -35,11 +37,13 @@ public class test2 implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         camera.zoom = 5f;
-        player = new PlayerInGame(new Sprite(new Texture("player.jpg")));
+        player = new PlayerInGame(new Sprite(new Texture("player.png")));
         player.setPosition(400, 150);
         cLayer = (TiledMapTileLayer) map.getLayers().get(0);
         tW = cLayer.getTileWidth();
         tH = cLayer.getTileHeight();
+        ini = new Inimigo(new Sprite(new Texture("ske.png")));
+        ini.setPosition(200, 200);
     }
 
     private float oldX, oldY;
@@ -50,6 +54,9 @@ public class test2 implements Screen {
     public void render(float delta) {
         oldX = player.getX();
         oldY = player.getY();
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            System.exit(0);
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.setY(player.getY() + (60 * 1.8f * delta));
             directY = true;
@@ -123,8 +130,27 @@ public class test2 implements Screen {
             cY = false;
             player.setY(oldY);
         }
-        if(portal){
-            game.setScreen(new Test(game));
+        if (portal) {
+            game.setScreen(new Test(game, ps));
+        }
+
+        if (((ini.getX() - player.getX()) < 20) && ((ini.getX() - player.getX()) > -20)) {
+                if (((ini.getY() - player.getY()) < 20) && ((ini.getY() - player.getY()) > -20)) {
+                    ps.life -= 1;
+                }
+            }
+        if (ps.life <= 0) {
+            ps.life = 100;
+            game.setScreen(new Test(game, ps));
+        }
+
+        ini.move(player, delta);
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            if (((ini.getX() - player.getX()) < 50) && ((ini.getX() - player.getX()) > -50)) {
+                if (((ini.getY() - player.getY()) < 50) && ((ini.getY() - player.getY()) > -50)) {
+                    ini.setPosition(50, 50);
+                }
+            }
         }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -132,6 +158,7 @@ public class test2 implements Screen {
         renderer.setView(camera);
         renderer.render();
         renderer.getBatch().begin();
+        ini.draw(renderer.getBatch());
         player.draw(renderer.getBatch());
         renderer.getBatch().end();
     }
