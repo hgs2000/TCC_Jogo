@@ -54,6 +54,9 @@ public class test2 implements Screen {
     public void render(float delta) {
         oldX = player.getX();
         oldY = player.getY();
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            System.exit(0);
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.setY(player.getY() + (60 * 1.8f * delta));
             directY = true;

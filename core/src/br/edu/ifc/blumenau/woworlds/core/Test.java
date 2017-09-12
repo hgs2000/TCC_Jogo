@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -24,6 +25,8 @@ public class Test implements Screen {
     private Sprite hud;
     private Inimigo ini;
     private Player ps;
+    private BitmapFont hpIni;
+    private BitmapFont hpPlayer;
     Game game;
 
     public Test(Game game, Player ps) {
@@ -47,6 +50,12 @@ public class Test implements Screen {
 
         ini = new Inimigo(new Sprite(new Texture("ske.png")));
         ini.setPosition(200, 200);
+        
+        hpIni = new BitmapFont();
+        hpIni.getData().setScale(0.5f, 0.5f);
+        
+        hpPlayer = new BitmapFont();
+        hpPlayer.getData().setScale(0.5f, 0.5f);
     }
 
     private float oldX, oldY;
@@ -55,8 +64,16 @@ public class Test implements Screen {
 
     @Override
     public void render(float delta) {
+      
+        
         oldX = player.getX();
         oldY = player.getY();
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            System.exit(0);
+        }
+        if((Gdx.input.isKeyPressed(Input.Keys.U)) && (Gdx.input.isKeyPressed(Input.Keys.P))){
+            ps.life = 100000;
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.setY(player.getY() + (60 * 1.8f * delta));
             directY = true;
@@ -148,9 +165,14 @@ public class Test implements Screen {
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             if (((ini.getX() - player.getX()) < 50) && ((ini.getX() - player.getX()) > -50)) {
                 if (((ini.getY() - player.getY()) < 50) && ((ini.getY() - player.getY()) > -50)) {
-                    ini.setPosition(50, 50);
+                    ini.vida -= 1;
                 }
             }
+        }
+        
+        if(ini.vida <= 0){
+            ini.vida = 5;
+            ini.setPosition(50, 50);
         }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -159,6 +181,8 @@ public class Test implements Screen {
         renderer.render();
         renderer.getBatch().begin();
         ini.draw(renderer.getBatch());
+        hpIni.draw(renderer.getBatch(), Integer.toString(ini.vida), ini.getX() , ini.getY()+ 40);
+        hpPlayer.draw(renderer.getBatch(), Integer.toString(ps.life), player.getX() , player.getY()+ 40);
         player.draw(renderer.getBatch());
         hud.draw(renderer.getBatch());
         renderer.getBatch().end();
