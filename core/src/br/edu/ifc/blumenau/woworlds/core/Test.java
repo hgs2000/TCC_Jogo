@@ -49,7 +49,7 @@ public class Test implements Screen {
         hud = new Sprite(new Texture("hud.png"));
 
         ini = new Inimigo(new Sprite(new Texture("ske.png")));
-        ini.setPosition(200, 200);
+        ini.setPosition(100, 150);
 
         hpIni = new BitmapFont();
         hpIni.getData().setScale(0.5f, 0.5f);
@@ -160,7 +160,7 @@ public class Test implements Screen {
             ps.life = 100;
         }
 
-        ini.move(player, delta);
+        ini.move(player, delta, cLayer);
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             if (((ini.getX() - player.getX()) < 50) && ((ini.getX() - player.getX()) > -50)) {
                 if (((ini.getY() - player.getY()) < 50) && ((ini.getY() - player.getY()) > -50)) {
@@ -171,7 +171,7 @@ public class Test implements Screen {
 
         if (ini.vida <= 0) {
             ini.vida = 5;
-            ini.setPosition(50, 50);
+            ini.setPosition(100, 150);
         }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
