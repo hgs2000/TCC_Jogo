@@ -24,6 +24,7 @@ public class test2 implements Screen {
     private float tW, tH;
     private Inimigo ini;
     private Player ps;
+    private BitmapFont lvPlayer;
     Game game;
 
     private BitmapFont hpIni;
@@ -54,6 +55,9 @@ public class test2 implements Screen {
 
         hpPlayer = new BitmapFont();
         hpPlayer.getData().setScale(0.5f, 0.5f);
+        
+        lvPlayer = new BitmapFont();
+        lvPlayer.getData().setScale(0.5f, 0.5f);
     }
 
     private float oldX, oldY;
@@ -175,7 +179,8 @@ public class test2 implements Screen {
         renderer.render();
         renderer.getBatch().begin();
         hpIni.draw(renderer.getBatch(), Integer.toString(ini.vida), ini.getX(), ini.getY() + 40);
-        hpPlayer.draw(renderer.getBatch(), Integer.toString(ps.life), player.getX(), player.getY() + 40);
+        hpPlayer.draw(renderer.getBatch(), "Vida: " + Integer.toString(ps.life), 10, 50);
+        lvPlayer.draw(renderer.getBatch(), "Level" + Integer.toString(ps.lv), 10, 100);
         ini.draw(renderer.getBatch());
         player.draw(renderer.getBatch());
         renderer.getBatch().end();

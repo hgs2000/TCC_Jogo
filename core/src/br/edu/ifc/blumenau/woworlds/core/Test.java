@@ -27,6 +27,7 @@ public class Test implements Screen {
     private Player ps;
     private BitmapFont hpIni;
     private BitmapFont hpPlayer;
+    private BitmapFont lvPlayer;
     Game game;
 
     public Test(Game game, Player ps) {
@@ -56,6 +57,9 @@ public class Test implements Screen {
 
         hpPlayer = new BitmapFont();
         hpPlayer.getData().setScale(0.5f, 0.5f);
+        
+        lvPlayer = new BitmapFont();
+        lvPlayer.getData().setScale(0.5f, 0.5f);
     }
 
     private float oldX, oldY;
@@ -172,6 +176,8 @@ public class Test implements Screen {
         if (ini.vida <= 0) {
             ini.vida = 5;
             ini.setPosition(100, 150);
+            ps.addXp(1);
+            ps.lvCheck();
         }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -181,7 +187,8 @@ public class Test implements Screen {
         renderer.getBatch().begin();
         ini.draw(renderer.getBatch());
         hpIni.draw(renderer.getBatch(), Integer.toString(ini.vida), ini.getX(), ini.getY() + 40);
-        hpPlayer.draw(renderer.getBatch(), Integer.toString(ps.life), player.getX(), player.getY() + 40);
+        hpPlayer.draw(renderer.getBatch(), Integer.toString(ps.life), 10, 50);
+        lvPlayer.draw(renderer.getBatch(), Integer.toString(ps.life), 10, 100);
         player.draw(renderer.getBatch());
         hud.draw(renderer.getBatch());
         renderer.getBatch().end();

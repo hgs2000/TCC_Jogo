@@ -3,13 +3,26 @@ package br.edu.ifc.blumenau.woworlds.core;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 
 public class Player {
-    
-    
+
     int life = 100;
-    int lv;
-    enum classe{
+    int lv = 1;
+    int xp = 0;
+
+    enum classe {
         mago, tank, ranger, rogue;
     }
-   Item[] inventario;
-   Equipamento arma, belt, ring, energyS;
+    Item[] inventario;
+    Equipamento arma, belt, ring, energyS;
+    
+        public void addXp(int xp){
+         this.xp += xp;
+        }
+        
+        public void lvCheck(){
+            if(xp >= (lv * 10)){
+                xp = 0;
+                lv += 1;
+            }
+        }
+
 }
