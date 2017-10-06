@@ -3,20 +3,47 @@ package br.edu.ifc.blumenau.woworlds.core;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import java.util.Random;
 
 public class Inimigo extends Sprite {
 
-    int vida = 5;
+    int vida = 20;
 
     boolean directX, directY;
     float oldX = this.getX();
     float oldY = this.getY();
     boolean cX, cY;
     float tW, tH;
+    boolean traped = false;
+    int passos = -1;
+    Random gen = new Random();
+    
     
     
     public void move(Sprite player, float delta, TiledMapTileLayer cLayer) {
-
+        
+        
+        
+        if(traped){
+            switch(passos){
+                case(0):
+                    this.setY(this.getY() + (60 * 2f * delta));
+                    break;
+                case(1):
+                    this.setY(this.getY() - (60 * 2f * delta));
+                    break;
+                 case(2):
+                    this.setX(this.getX() + (60 * 2f * delta));
+                    break;
+                case(3):
+                    this.setX(this.getX() - (60 * 2f * delta));
+                    break;
+            }
+            traped = false;
+        }
+        
+        
+        
         tW = this.getWidth();
         tH = this.getHeight();
         
@@ -38,6 +65,19 @@ public class Inimigo extends Sprite {
             this.setY(this.getY() - (60 * 0.5f * delta));
             directY = false;
         }
+        if(gen.nextBoolean()){
+            this.setY(this.getY() - (60 * (gen.nextInt(5) / 10f) * delta));
+        }else{
+             this.setY(this.getY() - (60 * (gen.nextInt(5) / 10f) * delta));
+        }
+        //if(gen.nextBoolean()){
+         //   this.setX(this.getX() - (60 * (gen.nextInt(10) / 10f) * delta));
+        //}else{
+         //    this.setX(this.getX() - (60 * (gen.nextInt(10) / 10f) * delta));
+        //}
+        
+        
+        
         
         //colisão
         //top left
@@ -98,7 +138,12 @@ public class Inimigo extends Sprite {
         }
         oldX = this.getX();
         oldY = this.getY();
-        
+        if((this.getX() == oldX) && (this.getY() == oldY)){
+            traped = true;
+            passos += 1;
+        }else{
+            passos = -1;
+        }
         
     }
 

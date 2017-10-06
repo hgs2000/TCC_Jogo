@@ -169,8 +169,10 @@ public class test2 implements Screen {
         
         
         if (ini.vida <= 0) {
-            ini.vida = 5;
+            ini.vida = 20;
             ini.setPosition(100, 150);
+            ps.addXp(1);
+            ps.lvCheck();
         }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);

@@ -187,8 +187,8 @@ public class Test implements Screen {
         renderer.getBatch().begin();
         ini.draw(renderer.getBatch());
         hpIni.draw(renderer.getBatch(), Integer.toString(ini.vida), ini.getX(), ini.getY() + 40);
-        hpPlayer.draw(renderer.getBatch(), Integer.toString(ps.life), 10, 50);
-        lvPlayer.draw(renderer.getBatch(), Integer.toString(ps.life), 10, 100);
+        hpPlayer.draw(renderer.getBatch(), "Vida: " + Integer.toString(ps.life), 10, 50);
+        lvPlayer.draw(renderer.getBatch(), "Level" + Integer.toString(ps.lv), 10, 100);
         player.draw(renderer.getBatch());
         hud.draw(renderer.getBatch());
         renderer.getBatch().end();
