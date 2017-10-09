@@ -17,6 +17,7 @@ public class Inimigo extends Sprite {
     boolean traped = false;
     int passos = -1;
     Random gen = new Random();
+    String imgPath;
     
     
     

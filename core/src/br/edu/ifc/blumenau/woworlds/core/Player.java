@@ -7,6 +7,7 @@ public class Player {
     int life = 100;
     int lv = 1;
     int xp = 0;
+    int dano = 5;
 
     enum classe {
         mago, tank, ranger, rogue;
@@ -22,6 +23,7 @@ public class Player {
             if(xp >= (lv * 10)){
                 xp = 0;
                 lv += 1;
+                dano = 5 * lv;
             }
         }
 

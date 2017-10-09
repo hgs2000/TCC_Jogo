@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.util.ArrayList;
 
 public class Menu extends ScreenAdapter {
 
@@ -48,7 +49,7 @@ public class Menu extends ScreenAdapter {
             int h = Gdx.graphics.getHeight();
             int w = Gdx.graphics.getWidth();
             if (((x > 44) && (x < 346)) && ((y < h - 450) && (y > h - (500)))) {
-                GAME.setScreen(new Test(GAME, playerStatus));
+                GAME.setScreen(new Mapa(new Player(), GAME, "map.tmx", "player.png", 200, 150, new ArrayList<Inimigo>()));
             }
             if (((x > 44) && (x < 346)) && ((y < h - 380) && (y > h - (430)))) {
                 //evento quando clica no botão loadGame

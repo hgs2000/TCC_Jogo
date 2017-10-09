@@ -155,6 +155,7 @@ public class test2 implements Screen {
         }
         if (ps.life <= 0) {
             ps.life = 100;
+            ps.lv -= 1;
             game.setScreen(new Test(game, ps));
         }
 
@@ -162,7 +163,7 @@ public class test2 implements Screen {
          if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             if (((ini.getX() - player.getX()) < 50) && ((ini.getX() - player.getX()) > -50)) {
                 if (((ini.getY() - player.getY()) < 50) && ((ini.getY() - player.getY()) > -50)) {
-                    ini.vida -= 1;
+                    ini.vida -= ps.dano;
                 }
             }
         }

@@ -162,13 +162,14 @@ public class Test implements Screen {
         if (ps.life <= 0) {
             player.setPosition(400, 150);
             ps.life = 100;
+            ps.lv -= 1;
         }
 
         ini.move(player, delta, cLayer);
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             if (((ini.getX() - player.getX()) < 50) && ((ini.getX() - player.getX()) > -50)) {
                 if (((ini.getY() - player.getY()) < 50) && ((ini.getY() - player.getY()) > -50)) {
-                    ini.vida -= 1;
+                    ini.vida -= ps.dano;
                 }
             }
         }
