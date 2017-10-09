@@ -75,6 +75,7 @@ public class Mapa implements Screen {
         
         lvPlayer = new BitmapFont();
         lvPlayer.getData().setScale(0.5f, 0.5f);
+        
     }
     
     private float oldX, oldY;
@@ -182,6 +183,8 @@ public class Mapa implements Screen {
             ps.lv -= 1;
         }
         
+        
+        
         ini.move(player, delta, cLayer);
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             if (((ini.getX() - player.getX()) < 50) && ((ini.getX() - player.getX()) > -50)) {
@@ -197,7 +200,15 @@ public class Mapa implements Screen {
             ps.addXp(1);
             ps.lvCheck();
         }
+        
 
+        camera.position.x = player.getX();
+        camera.position.y = player.getY();
+        
+        camera.zoom = 0.75f;
+        camera.update();
+        
+        
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(camera);
