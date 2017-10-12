@@ -12,13 +12,11 @@ import java.util.ArrayList;
 public class Menu extends ScreenAdapter {
 
     private final SpriteBatch BATCH;
-    Texture title;
-    Texture new_game, load_game, options, exit;
-    Music menu_music;
-    Player playerStatus;
+    private Texture title;
+    private Texture new_game, load_game, options, exit;
     private final TCC GAME;
 
-    public Menu(final TCC game) {
+    Menu(final TCC game) {
         this.GAME = game;
 
         BATCH = new SpriteBatch();
@@ -28,13 +26,13 @@ public class Menu extends ScreenAdapter {
         options = new Texture("options.png");
         exit = new Texture("exit.png");
         if (TCC.op) {
-            menu_music = Gdx.audio.newMusic(Gdx.files.internal("menuMusic.mp3"));
+            Music menu_music = Gdx.audio.newMusic(Gdx.files.internal("menuMusic.mp3"));
             menu_music.setLooping(true);
             menu_music.setVolume(0.5f);
             menu_music.play();
             TCC.op = false;
         }
-        playerStatus = new Player();
+        Player playerStatus = new Player();
         
         
 
