@@ -3,7 +3,7 @@ package br.edu.ifc.blumenau.woworlds.core;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,11 +13,12 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+
 import java.util.ArrayList;
 
-public class Mapa implements Screen {
+public class Mapa extends ScreenAdapter {
 
-    
+
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -31,7 +32,7 @@ public class Mapa implements Screen {
     private BitmapFont hpPlayer;
     private BitmapFont lvPlayer;
     Game game;
-    
+
     //of the the
     private String mapPath;
     private String playerImg;
@@ -49,9 +50,7 @@ public class Mapa implements Screen {
         this.playerStartY = playerStartY;
         this.inimigos = inimigos;
     }
-    
-    
-    
+
 
     @Override
     public void show() {
@@ -66,24 +65,22 @@ public class Mapa implements Screen {
         tW = cLayer.getTileWidth();
         tH = cLayer.getTileHeight();
         hud = new Sprite(new Texture("hud.png"));//HUD PADRAO HERE
-        
-         ini = new Inimigo(new Sprite(new Texture("ske.png")));
+
+        ini = new Inimigo(new Sprite(new Texture("ske.png")));
         ini.setPosition(100, 150);
-        
+
         hpPlayer = new BitmapFont();
         hpPlayer.getData().setScale(0.5f, 0.5f);
-        
+
         lvPlayer = new BitmapFont();
         lvPlayer.getData().setScale(0.5f, 0.5f);
-        
+
     }
-    
+
     private float oldX, oldY;
     boolean cX = false, cY = false, portal = false;
     boolean directX, directY;//true +; false -
-    
-    
-    
+
 
     @Override
     public void render(float delta) {
@@ -111,7 +108,7 @@ public class Mapa implements Screen {
             player.setX(player.getX() - (60 * 1.8f * delta));
             directX = false;
         }
-        
+
         //colisão
         //top left
         if (!directX) {
@@ -182,9 +179,8 @@ public class Mapa implements Screen {
             ps.life = 100;
             ps.lv -= 1;
         }
-        
-        
-        
+
+
         ini.move(player, delta, cLayer);
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             if (((ini.getX() - player.getX()) < 50) && ((ini.getX() - player.getX()) > -50)) {
@@ -193,22 +189,22 @@ public class Mapa implements Screen {
                 }
             }
         }
-        
+
         if (ini.vida <= 0) {
             ini.vida = 5;
             ini.setPosition(100, 150);
             ps.addXp(1);
             ps.lvCheck();
         }
-        
+
 
         camera.position.x = player.getX();
         camera.position.y = player.getY();
-        
+
         camera.zoom = 0.75f;
         camera.update();
-        
-        
+
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(camera);
@@ -220,32 +216,6 @@ public class Mapa implements Screen {
         player.draw(renderer.getBatch());
         hud.draw(renderer.getBatch());
         renderer.getBatch().end();
-        
-    }
-
-    @Override
-    public void resize(int i, int i1) {
 
     }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
-
 }

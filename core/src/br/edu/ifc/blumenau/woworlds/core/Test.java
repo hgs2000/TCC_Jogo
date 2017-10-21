@@ -28,7 +28,7 @@ public class Test implements Screen {
     private BitmapFont hpIni;
     private BitmapFont hpPlayer;
     private BitmapFont lvPlayer;
-    Game game;
+    private Game game;
 
     public Test(Game game, Player ps) {
         this.game = game;
@@ -57,7 +57,7 @@ public class Test implements Screen {
 
         hpPlayer = new BitmapFont();
         hpPlayer.getData().setScale(0.5f, 0.5f);
-        
+
         lvPlayer = new BitmapFont();
         lvPlayer.getData().setScale(0.5f, 0.5f);
     }

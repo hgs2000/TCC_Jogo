@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import java.util.ArrayList;
 
 public class Menu extends ScreenAdapter {
@@ -32,9 +33,8 @@ public class Menu extends ScreenAdapter {
             menu_music.play();
             TCC.op = false;
         }
-        Player playerStatus = new Player();
-        
-        
+        //Player playerStatus = new Player();
+
 
     }
 
@@ -51,6 +51,7 @@ public class Menu extends ScreenAdapter {
             }
             if (((x > 44) && (x < 346)) && ((y < h - 380) && (y > h - (430)))) {
                 //evento quando clica no botão loadGame
+                System.out.println("To be completed");
             }
             if (((x > 44) && (x < 346)) && ((y < h - 310) && (y > h - (360)))) {
                 //evento quando clica no botão options
