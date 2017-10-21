@@ -1,51 +1,36 @@
 package br.edu.ifc.blumenau.woworlds.core.Patched;
 
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-class Level1 extends ScreenAdapter {
+public class Level1 extends Level {
 
-    private TiledMap map;
-    private OrthogonalTiledMapRenderer render;
-    private OrthographicCamera camera;
-    private Player player;
-    private TiledMapTileLayer tileCollisionWalls;
+    Level1(Game game, Player player, OrthographicCamera camera, int level) {
+        super(game, player, camera, level);
+    }
 
-    private Game game;
+    @Override
+    public void show() {
 
-    Level1() {
-
-        try {
-            this.camera = new OrthographicCamera();
-            this.camera.setToOrtho(false, 1280, 720);
-            this.map = loadMap();
-            this.player = new Player(Classe.INICIADOR);
-            this.render = new OrthogonalTiledMapRenderer(map);
-            this.render.setView(camera);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    }
+        Gdx.gl20.glClearColor(0, 0, 0, 1);
+        stateTime += Gdx.graphics.getDeltaTime();
+        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        renderer.setView(camera);
+        renderer.render();
 
-    private TiledMap loadMap() throws Exception {
-        try {
-            return new TmxMapLoader().load("Mapas/Level1.tmx");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
+        TextureRegion curPlayerFrame = player.getCurrentAnimation().getKeyFrame(0, true);
+        batch.begin();
+        batch.draw(curPlayerFrame, 0, 0);
+
+        batch.end();
+        camera.update();
     }
 }

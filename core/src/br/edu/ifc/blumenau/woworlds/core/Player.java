@@ -2,9 +2,42 @@ package br.edu.ifc.blumenau.woworlds.core;
 
 public class Player {
 
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+
+    public int getLv() {
+        return lv;
+    }
+
+    public void setLv(int lv) {
+        this.lv = lv;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
     int life = 100;
     int lv = 1;
     int xp = 0;
+
+    public int getDano() {
+        return dano;
+    }
+
+    public void setDano(int dano) {
+        this.dano = dano;
+    }
+
     int dano = 5;
 
     enum classe {

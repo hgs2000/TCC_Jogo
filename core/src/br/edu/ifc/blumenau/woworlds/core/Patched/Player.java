@@ -15,13 +15,12 @@ public class Player {
     //Variáveis gerais
     private Classe classe = Classe.INICIADOR;
 
-
     private EstadoPlayer state = EstadoPlayer.STOP_DOWN;
     private int hp = 100;
-
+    private int dano = 0;
 
     private int curXp = 0;
-    private int curLevel;
+    private int curLevel = 1;
 
     //Variáveis de textura
     private Texture texture;
@@ -51,36 +50,32 @@ public class Player {
                 case MAGO:
                     this.texture = new Texture(Gdx.files.internal("Knight_Walk.png"));
             }
-            this.walkingdown = setAnimation(1);
+            setAnimation();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     //Métodos privados
+    private void setAnimation() throws Exception {
+        new TextureRegion();
+        TextureRegion[][] load = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight() / 4);
+        TextureRegion[] frames = new TextureRegion[4 * 4];
 
-    /**
-     * @param way 1 para baixo, 2 para cima, 3 para a esquerda, 4 para a direita
-     * @return animação direcional
-     */
-    private Animation<TextureRegion> setAnimation(int way) throws Exception {
+        System.arraycopy(load[0], 0, frames, 0, 4);
+        walkingdown = new Animation<TextureRegion>(0.2f, frames);
 
-        float elapsedTime = 0;
-
-        Animation<TextureRegion> anim = new Animation<TextureRegion>(0.33f);
-
-        switch (way) {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-            default:
-                throw new Exception("Opção " + way + " inválida");
+        //System.arraycopy(load[0], 0, frames, 4, 4);
+        for (int col = 0; col < 4; col++) {
+            frames[col] = load[1][col];
         }
-        return null;
+        walkingup = new Animation<TextureRegion>(0.2f, frames);
+
+        System.arraycopy(load[0], 0, frames, 8, 4);
+        walkingleft = new Animation<TextureRegion>(0.2f, frames);
+
+        System.arraycopy(load[0], 0, frames, 12, 4);
+        walkingright = new Animation<TextureRegion>(0.2f, frames);
     }
 
     //Métodos públicos
@@ -124,10 +119,24 @@ public class Player {
         this.curLevel = curLevel;
     }
 
+    public int getDano() {
+        return dano;
+    }
+
+    public void setDano(int dano) {
+        this.dano = dano;
+    }
+
     public void changeState(EstadoPlayer current) {
         this.state = current;
     }
 
+    Animation<TextureRegion> getCurrentAnimation() {
+        //switch (state) {
+        //          case WALK_DOWN:
+        return walkingdown;
+        //    }
+    }
 
 }
 

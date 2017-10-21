@@ -14,6 +14,7 @@ public class DesktopGameTest {
         config.fullscreen = false;
         config.resizable = false;
         config.useHDPI = true;
+        config.foregroundFPS = 30;
         new LwjglApplication(new GameStart(), config);
     }
 

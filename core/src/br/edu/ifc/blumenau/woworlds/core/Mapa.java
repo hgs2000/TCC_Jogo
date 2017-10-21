@@ -31,7 +31,7 @@ public class Mapa extends ScreenAdapter {
     private BitmapFont hpIni;
     private BitmapFont hpPlayer;
     private BitmapFont lvPlayer;
-    Game game;
+    private Game game;
 
     //of the the
     private String mapPath;
@@ -156,8 +156,8 @@ public class Mapa extends ScreenAdapter {
                 cY = cLayer.getCell((int) ((player.getX() + player.getWidth()) / tW), (int) ((player.getY() + player.getHeight()) / tH)).getTile().getProperties().containsKey("solid");
             }
         }
-
         //end colisão
+
         if (cX) {
             cX = false;
             player.setX(oldX);

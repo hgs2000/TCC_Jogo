@@ -7,6 +7,14 @@ import java.util.Random;
 
 public class Inimigo extends Sprite {
 
+    public int getVida() {
+        return vida;
+    }
+
+    public void setVida(int vida) {
+        this.vida = vida;
+    }
+
     int vida = 20;
 
     boolean directX, directY;
