@@ -1,7 +1,7 @@
 package br.edu.ifc.blumenau.woworlds.core.Patched;
 
 
-import com.badlogic.gdx.Game;
+import br.edu.ifc.blumenau.woworlds.core.Patched.Bases.MainGame;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -15,17 +15,18 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class Level extends ScreenAdapter {
 
-    private TiledMap map;
+    TiledMap map;
     TiledMapRenderer renderer;
     OrthographicCamera camera;
     protected TiledMapTileLayer cLayer;
-    private Game game;
+
+    private MainGame game;
     protected Player player;
     SpriteBatch batch;
     float stateTime = 0;
     private Animation<TextureRegion> playerAnimation;
 
-    Level(Game game, Player player, OrthographicCamera camera, int level) {
+    Level(MainGame game, Player player, OrthographicCamera camera, int level) {
         this.game = game;
         this.player = player;
         //Start map
@@ -50,6 +51,14 @@ public class Level extends ScreenAdapter {
     @Override
     public void render(float delta) {
 
+    }
+
+    public MainGame getGame() {
+        return game;
+    }
+
+    public void setGame(MainGame game) {
+        this.game = game;
     }
 
     private void changeAnimation() {

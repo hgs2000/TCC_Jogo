@@ -1,6 +1,7 @@
 package br.edu.ifc.blumenau.woworlds.desktop;
 
 import br.edu.ifc.blumenau.woworlds.core.TCC;
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -14,6 +15,8 @@ public class DesktopLauncher {
         config.fullscreen = false;
         config.resizable = false;
         config.useHDPI = true;
+        config.foregroundFPS = 30;
+        config.addIcon("icon.png", Files.FileType.Internal);
         new LwjglApplication(new TCC(), config);
     }
 }

@@ -1,7 +1,7 @@
 package br.edu.ifc.blumenau.woworlds.core.Patched;
 
 
-import com.badlogic.gdx.Game;
+import br.edu.ifc.blumenau.woworlds.core.Patched.Bases.MainGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Level1 extends Level {
 
-    Level1(Game game, Player player, OrthographicCamera camera, int level) {
+    public Level1(MainGame game, Player player, OrthographicCamera camera, int level) {
         super(game, player, camera, level);
     }
 
@@ -25,12 +25,18 @@ public class Level1 extends Level {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(camera);
         renderer.render();
-
         TextureRegion curPlayerFrame = player.getCurrentAnimation().getKeyFrame(0, true);
         batch.begin();
         batch.draw(curPlayerFrame, 0, 0);
 
+        if (getGame().getMoveDown()) {
+
+        }
+
         batch.end();
+
+
+
         camera.update();
     }
 }

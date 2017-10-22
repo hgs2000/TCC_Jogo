@@ -1,5 +1,6 @@
 package br.edu.ifc.blumenau.woworlds.core.Patched;
 
+import br.edu.ifc.blumenau.woworlds.core.Patched.Bases.Classe;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -39,7 +40,7 @@ public class Player {
     /**
      * @param classe pode ser MAGO, CAVALEIRO ou ASSASSINO
      */
-    Player(Classe classe) {
+    public Player(Classe classe) {
 
         try {
             this.classe = classe;
@@ -145,6 +146,3 @@ enum EstadoPlayer {
     WALK_DOWN, WALK_UP, WALK_LEFT, WALK_RIGHT
 }
 
-enum Classe {
-    INICIADOR, MAGO, CAVALEIRO, ASSASSINO
-}
