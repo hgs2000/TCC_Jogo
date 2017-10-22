@@ -10,18 +10,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 
-public class Menu extends ScreenAdapter {
+public class GameOver extends ScreenAdapter {
 
-    private final SpriteBatch BATCH;
-    private Texture title;
+    private SpriteBatch BATCH;
+    private Texture title2;
     private Texture new_game, load_game, options, exit;
     private final TCC GAME;
 
-    Menu(final TCC game) {
+    GameOver(final TCC game) {
         this.GAME = game;
 
         BATCH = new SpriteBatch();
-        title = new Texture("titulo.png");
+        title2 = new Texture("titulo2.png");
         new_game = new Texture("newGame.png");
         load_game = new Texture("loadGame.png");
         options = new Texture("options.png");
@@ -47,8 +47,7 @@ public class Menu extends ScreenAdapter {
             int h = Gdx.graphics.getHeight();
             int w = Gdx.graphics.getWidth();
             if (((x > 44) && (x < 346)) && ((y < h - 450) && (y > h - (500)))) {
-                TCC.actual += 1;
-                GAME.setScreen(TCC.mapas.get(TCC.actual));
+                GAME.setScreen(new Mapa(new Player(), GAME, "map.tmx", "player.png", 200, 150, new ArrayList<Inimigo>()));
             }
             if (((x > 44) && (x < 346)) && ((y < h - 380) && (y > h - (430)))) {
                 //evento quando clica no botão loadGame
@@ -67,7 +66,7 @@ public class Menu extends ScreenAdapter {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         BATCH.begin();
-        BATCH.draw(title, 30, Gdx.graphics.getHeight() - 100);
+        BATCH.draw(title2, 30, Gdx.graphics.getHeight() - 100);
         BATCH.draw(new_game, 45, Gdx.graphics.getHeight() - 250);
         BATCH.draw(load_game, 45, Gdx.graphics.getHeight() - 320);
         BATCH.draw(options, 45, Gdx.graphics.getHeight() - 390);

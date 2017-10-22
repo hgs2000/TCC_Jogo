@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 public class Mapa extends ScreenAdapter {
 
-
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -26,12 +25,10 @@ public class Mapa extends ScreenAdapter {
     private TiledMapTileLayer cLayer;
     private float tW, tH;
     private Sprite hud;
-    private Inimigo ini;
     private Player ps;
-    private BitmapFont hpIni;
     private BitmapFont hpPlayer;
     private BitmapFont lvPlayer;
-    private Game game;
+    private TCC game;
 
     //of the the
     private String mapPath;
@@ -41,7 +38,7 @@ public class Mapa extends ScreenAdapter {
     private ArrayList<Inimigo> inimigos;
     //===========================
 
-    public Mapa(Player ps, Game game, String mapPath, String playerImg, int playerStartX, int playerStartY, ArrayList<Inimigo> inimigos) {
+    public Mapa(Player ps, TCC game, String mapPath, String playerImg, int playerStartX, int playerStartY, ArrayList<Inimigo> inimigos) {
         this.ps = ps;
         this.game = game;
         this.mapPath = mapPath;
@@ -50,7 +47,6 @@ public class Mapa extends ScreenAdapter {
         this.playerStartY = playerStartY;
         this.inimigos = inimigos;
     }
-
 
     @Override
     public void show() {
@@ -65,9 +61,9 @@ public class Mapa extends ScreenAdapter {
         tW = cLayer.getTileWidth();
         tH = cLayer.getTileHeight();
         hud = new Sprite(new Texture("hud.png"));//HUD PADRAO HERE
-
-        ini = new Inimigo(new Sprite(new Texture("ske.png")));
-        ini.setPosition(100, 150);
+        for (Inimigo ini : inimigos) {
+            ini.setPosition(ini.x, ini.y);
+        }
 
         hpPlayer = new BitmapFont();
         hpPlayer.getData().setScale(0.5f, 0.5f);
@@ -80,7 +76,6 @@ public class Mapa extends ScreenAdapter {
     private float oldX, oldY;
     boolean cX = false, cY = false, portal = false;
     boolean directX, directY;//true +; false -
-
 
     @Override
     public void render(float delta) {
@@ -167,36 +162,38 @@ public class Mapa extends ScreenAdapter {
             player.setY(oldY);
         }
         if (portal) {
-            game.setScreen(new test2(game, ps));
-        }
-        if (((ini.getX() - player.getX()) < 20) && ((ini.getX() - player.getX()) > -20)) {
-            if (((ini.getY() - player.getY()) < 20) && ((ini.getY() - player.getY()) > -20)) {
-                ps.life -= 1;
-            }
-        }
-        if (ps.life <= 0) {
-            player.setPosition(400, 150);
-            ps.life = 100;
-            ps.lv -= 1;
+            TCC.actual += 1;
+            game.setScreen(TCC.mapas.get(TCC.actual));
         }
 
-
-        ini.move(player, delta, cLayer);
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            if (((ini.getX() - player.getX()) < 50) && ((ini.getX() - player.getX()) > -50)) {
-                if (((ini.getY() - player.getY()) < 50) && ((ini.getY() - player.getY()) > -50)) {
-                    ini.vida -= ps.dano;
+        for (Inimigo ini : inimigos) {
+            if (((ini.getX() - player.getX()) < 20) && ((ini.getX() - player.getX()) > -20)) {
+                if (((ini.getY() - player.getY()) < 20) && ((ini.getY() - player.getY()) > -20)) {
+                    ps.life -= 1;
                 }
             }
         }
 
-        if (ini.vida <= 0) {
-            ini.vida = 5;
-            ini.setPosition(100, 150);
-            ps.addXp(1);
-            ps.lvCheck();
+        if (ps.life <= 0) {
+            game.setScreen(new Menu(game));
         }
 
+        for (Inimigo ini : inimigos) {
+            ini.move(player, delta, cLayer);
+            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                if (((ini.getX() - player.getX()) < 50) && ((ini.getX() - player.getX()) > -50)) {
+                    if (((ini.getY() - player.getY()) < 50) && ((ini.getY() - player.getY()) > -50)) {
+                        ini.vida -= ps.dano;
+                    }
+                }
+            }
+            if (ini.vida <= 0) {
+                ini.vida = 5;
+                ini.setPosition(100, 150);
+                ps.addXp(1);
+                ps.lvCheck();
+            }
+        }
 
         camera.position.x = player.getX();
         camera.position.y = player.getY();
@@ -204,13 +201,14 @@ public class Mapa extends ScreenAdapter {
         camera.zoom = 0.75f;
         camera.update();
 
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(camera);
         renderer.render();
         renderer.getBatch().begin();
-        ini.draw(renderer.getBatch());
+        for (Inimigo ini : inimigos) {
+            ini.draw(renderer.getBatch());
+        }
         hpPlayer.draw(renderer.getBatch(), "Vida: " + Integer.toString(ps.life), 10, 50);
         lvPlayer.draw(renderer.getBatch(), "Level" + Integer.toString(ps.lv), 10, 100);
         player.draw(renderer.getBatch());

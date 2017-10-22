@@ -16,7 +16,7 @@ public class Inimigo extends Sprite {
     }
 
     int vida = 20;
-
+    int x, y;
     boolean directX, directY;
     float oldX = this.getX();
     float oldY = this.getY();
@@ -156,8 +156,10 @@ public class Inimigo extends Sprite {
         
     }
 
-    public Inimigo(Sprite sprite) {
+    public Inimigo(Sprite sprite, int x, int y) {
         super(sprite);
+        this.x = x;
+        this.y = y;
 
     }
 
