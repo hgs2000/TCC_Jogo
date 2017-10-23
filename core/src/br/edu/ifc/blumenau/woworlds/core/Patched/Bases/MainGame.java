@@ -12,16 +12,17 @@ import static br.edu.ifc.blumenau.woworlds.core.Patched.Bases.Classe.INICIADOR;
 
 public class MainGame extends Game {
 
-    //Variáveis
+    //<editor-fold defaultstate="collapsed" desc="Variáveis">
+    //Declaração de variáveis
     private OrthographicCamera camera;
 
     private boolean moveDown = false;
-
     private boolean moveUp = false;
     private boolean moveLeft = false;
     private boolean moveRight = false;
-    //Fim
 
+    //Fim declaração de variáveis
+    //</editor-fold>
     /**
      * Called when the {@link Application} is first created.
      */
@@ -33,8 +34,11 @@ public class MainGame extends Game {
         this.camera.update();
         this.setScreen(new Level1(this, new Player(INICIADOR), camera, 1));
         Gdx.input.setInputProcessor(new InputProcessor((GameStart) this));
+        
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Getters e Setters de Movimentação">
+    //Getters e setters de movimentação
     public boolean getMoveDown() {
         return moveDown;
     }
@@ -66,4 +70,6 @@ public class MainGame extends Game {
     public void setMoveRight(boolean moveRight) {
         this.moveRight = moveRight;
     }
+    //Fim getters e setters da movimentação
+    //</editor-fold>
 }

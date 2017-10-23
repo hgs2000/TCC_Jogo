@@ -1,6 +1,5 @@
 package br.edu.ifc.blumenau.woworlds.core.Patched;
 
-
 import br.edu.ifc.blumenau.woworlds.core.Patched.Bases.MainGame;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,6 +18,8 @@ public class Level extends ScreenAdapter {
     TiledMapRenderer renderer;
     OrthographicCamera camera;
     protected TiledMapTileLayer cLayer;
+
+    private int moveX, moveY;
 
     private MainGame game;
     protected Player player;
@@ -45,7 +46,6 @@ public class Level extends ScreenAdapter {
     @Override
     public void show() {
 
-
     }
 
     @Override
@@ -59,6 +59,22 @@ public class Level extends ScreenAdapter {
 
     public void setGame(MainGame game) {
         this.game = game;
+    }
+
+    public int getMoveX() {
+        return moveX;
+    }
+
+    public void setMoveX(int moveX) {
+        this.moveX = moveX;
+    }
+
+    public int getMoveY() {
+        return moveY;
+    }
+
+    public void setMoveY(int moveY) {
+        this.moveY = moveY;
     }
 
     private void changeAnimation() {

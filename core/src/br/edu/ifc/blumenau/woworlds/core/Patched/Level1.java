@@ -1,6 +1,5 @@
 package br.edu.ifc.blumenau.woworlds.core.Patched;
 
-
 import br.edu.ifc.blumenau.woworlds.core.Patched.Bases.MainGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -34,9 +33,28 @@ public class Level1 extends Level {
         }
 
         batch.end();
+        if (getGame().getMoveDown() == true && getGame().getMoveUp() == true) {
+            setMoveY(0);
+        } else if (getGame().getMoveDown() == true && getGame().getMoveUp() == false) {
+            setMoveY(-1);
+        } else if (getGame().getMoveDown() == false && getGame().getMoveUp() == true) {
+            setMoveY(1);
+        } else {
+            setMoveY(getMoveY() - getMoveY());
+        }
 
+        if (getGame().getMoveLeft() == true && getGame().getMoveRight() == true) {
+            setMoveX(0);
+        } else if (getGame().getMoveLeft() == true && getGame().getMoveRight() == false) {
+            setMoveX(-1);
+        } else if (getGame().getMoveLeft() == false && getGame().getMoveRight() == true) {
+            setMoveX(1);
+        } else {
+            setMoveX(getMoveX() - getMoveX());
+        }
 
-
+        camera.zoom = 0.8f;
+        camera.translate(getMoveX(), getMoveY());
         camera.update();
     }
 }
