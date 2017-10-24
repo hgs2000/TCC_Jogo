@@ -8,6 +8,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 public class DesktopLauncher {
 
     public static void main(String[] arg) {
+        DesktopGameTest.main(arg);
+        /*
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "World Of Worlds";
         config.width = 1280;
@@ -17,6 +19,6 @@ public class DesktopLauncher {
         config.useHDPI = true;
         config.foregroundFPS = 30;
         config.addIcon("icon.png", Files.FileType.Internal);
-        new LwjglApplication(new TCC(), config);
+        new LwjglApplication(new TCC(), config);*/
     }
 }

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-
 /**
  * Classe utilizada pelo jogo para representar o jogador
  */
@@ -36,7 +35,6 @@ public class Player {
     //Fim declaração de variáveis
 
     //Construtores da classe
-
     /**
      * @param classe pode ser MAGO, CAVALEIRO ou ASSASSINO
      */
@@ -59,7 +57,6 @@ public class Player {
 
     //Métodos privados
     private void setAnimation() throws Exception {
-        new TextureRegion();
         TextureRegion[][] load = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight() / 4);
         TextureRegion[] frames = new TextureRegion[4 * 4];
 
@@ -67,9 +64,7 @@ public class Player {
         walkingdown = new Animation<TextureRegion>(0.2f, frames);
 
         //System.arraycopy(load[0], 0, frames, 4, 4);
-        for (int col = 0; col < 4; col++) {
-            frames[col] = load[1][col];
-        }
+        System.arraycopy(load[1], 0, frames, 0, 4);
         walkingup = new Animation<TextureRegion>(0.2f, frames);
 
         System.arraycopy(load[0], 0, frames, 8, 4);
@@ -128,6 +123,12 @@ public class Player {
         this.dano = dano;
     }
 
+    /**
+     * Muda o estado atual do jogador
+     *
+     * @param current STOP_DOWN, STOP_UP, STOP_LEFT, STOP_RIGHT, <br>
+     * WALK_DOWN, WALK_UP, WALK_LEFT, WALK_RIGHT
+     */
     public void changeState(EstadoPlayer current) {
         this.state = current;
     }
@@ -145,4 +146,3 @@ enum EstadoPlayer {
     STOP_DOWN, STOP_UP, STOP_LEFT, STOP_RIGHT,
     WALK_DOWN, WALK_UP, WALK_LEFT, WALK_RIGHT
 }
-

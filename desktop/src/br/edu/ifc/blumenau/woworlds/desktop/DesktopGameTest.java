@@ -18,6 +18,7 @@ public class DesktopGameTest {
         config.foregroundFPS = 30;
         config.addIcon("icon.png", Files.FileType.Internal);
         new LwjglApplication(new GameStart(), config);
+        //248, 74
     }
 
 }

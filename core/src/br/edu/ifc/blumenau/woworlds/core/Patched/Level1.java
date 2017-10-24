@@ -13,11 +13,6 @@ public class Level1 extends Level {
     }
 
     @Override
-    public void show() {
-
-    }
-
-    @Override
     public void render(float delta) {
         Gdx.gl20.glClearColor(0, 0, 0, 1);
         stateTime += Gdx.graphics.getDeltaTime();
@@ -26,7 +21,7 @@ public class Level1 extends Level {
         renderer.render();
         TextureRegion curPlayerFrame = player.getCurrentAnimation().getKeyFrame(0, true);
         batch.begin();
-        batch.draw(curPlayerFrame, 0, 0);
+        batch.draw(curPlayerFrame, Gdx.graphics.getWidth() / 2 - curPlayerFrame.getRegionWidth() / 2, Gdx.graphics.getHeight() / 2 - curPlayerFrame.getRegionHeight() / 2);
 
         if (getGame().getMoveDown()) {
 
@@ -53,8 +48,9 @@ public class Level1 extends Level {
             setMoveX(getMoveX() - getMoveX());
         }
 
-        camera.zoom = 0.8f;
+        camera.zoom = 0.5f;
         camera.translate(getMoveX(), getMoveY());
         camera.update();
+        //System.out.println(camera.position.x + ";" + camera.position.y);
     }
 }

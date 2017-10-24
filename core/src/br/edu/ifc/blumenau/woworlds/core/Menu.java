@@ -35,7 +35,6 @@ public class Menu extends ScreenAdapter {
         }
         //Player playerStatus = new Player();
 
-
     }
 
     @Override

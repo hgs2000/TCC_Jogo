@@ -1,7 +1,6 @@
 package br.edu.ifc.blumenau.woworlds.core.Patched.Bases;
 
 import br.edu.ifc.blumenau.woworlds.core.Patched.GameStart;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
@@ -68,12 +67,12 @@ public class InputProcessor extends InputAdapter {
     }
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Controle Mouse Apertado">
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        
-        
-        
+
         return super.touchDown(screenX, screenY, pointer, button);
     }
+//</editor-fold>
 
 }

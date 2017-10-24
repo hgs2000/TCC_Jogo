@@ -11,6 +11,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class Level extends ScreenAdapter {
 
@@ -27,19 +29,40 @@ public class Level extends ScreenAdapter {
     float stateTime = 0;
     private Animation<TextureRegion> playerAnimation;
 
+    public Animation<TextureRegion> getPlayerAnimation() {
+        return playerAnimation;
+    }
+
     Level(MainGame game, Player player, OrthographicCamera camera, int level) {
         this.game = game;
         this.player = player;
         //Start map
         this.map = new TmxMapLoader().load("Mapas/Level" + level + ".tmx");
+        Vector2 spawnPos = new Vector2();
+        try {
+            TiledMapTileLayer layer = (TiledMapTileLayer) this.map.getLayers().get("Floor");
+            spawnPos.set(layer.getCell(14, 14).getTile().getOffsetX(), layer.getCell(14, 14).getTile().getOffsetY());
+            throw new Exception("NotFound");
+
+        } catch (Exception ex) {
+
+            if (ex != null) {
+                System.out.println(ex.getMessage());
+            } else {
+                ex.printStackTrace();
+            }
+        }
+        System.out.println("Spawn: " + spawnPos.x + "," + spawnPos.y);
+
         //Start camera
         this.camera = camera;
+        this.camera.position.set(spawnPos, 0);
         this.camera.update();
         //Start renderer
         this.renderer = new OrthogonalTiledMapRenderer(this.map, 0.5f);
         this.renderer.setView(camera);
         //Start playeranimation
-        changeAnimation();
+        this.playerAnimation = player.getCurrentAnimation();
         this.batch = new SpriteBatch();
     }
 

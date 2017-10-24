@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="left-down" width="20" height="20" tilewidth="32" tileheight="32" nextobjectid="1">
  <properties>
-  <property name="Spawn" value="spawn"/>
+  <property name="Spawn" value="1"/>
  </properties>
  <tileset firstgid="1" name="Wall" tilewidth="32" tileheight="32" tilecount="1020" columns="20">
   <image source="Wall.png" trans="ff00ff" width="640" height="1632"/>
  </tileset>
  <tileset firstgid="1021" name="Floor" tilewidth="32" tileheight="32" tilecount="819" columns="21">
   <image source="Floor.png" trans="ff00ff" width="672" height="1248"/>
+  <tile id="148">
+   <properties>
+    <property name="Spawn" type="int" value="1"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Floor" width="20" height="20">
   <data encoding="csv">
@@ -26,7 +31,7 @@
 0,0,0,0,0,0,0,0,0,0,0,1211,1210,1211,1211,1211,1211,1211,1212,1211,
 0,0,0,0,0,0,0,0,0,0,0,1211,1231,1232,1232,1232,1232,1232,1233,1211,
 0,0,0,0,0,0,0,0,0,0,0,1211,1231,1232,1232,1232,1232,1232,1233,1211,
-0,0,0,0,0,0,0,0,0,0,0,1211,1231,1232,1232,1232,1232,1232,1233,1211,
+0,0,0,0,0,0,0,0,0,0,0,1211,1231,1232,1232,1169,1232,1232,1233,1211,
 0,0,0,0,0,0,0,0,0,0,0,1211,1231,1232,1232,1232,1232,1232,1233,1211,
 0,0,0,0,0,0,0,0,0,0,0,1211,1231,1232,1232,1232,1232,1232,1233,1211,
 0,0,0,0,0,0,0,0,0,0,0,1211,1252,1253,1253,1253,1253,1253,1254,1211,
