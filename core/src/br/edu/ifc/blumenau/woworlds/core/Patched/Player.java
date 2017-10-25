@@ -112,7 +112,6 @@ public class Player {
         anim[0] = frames[12];
         stopright = new Animation<TextureRegion>(0.2f, anim);
 
-
     }
 
     //Métodos públicos

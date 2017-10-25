@@ -52,31 +52,30 @@ public class Level1 extends Level {
     private void setAnimation() {
         if (getMoveX() > 0) {
             player.setState(EstadoPlayer.WALK_RIGHT);
+            return;
         } else if (getMoveX() < 0) {
             player.setState(EstadoPlayer.WALK_LEFT);
-        } else {
-            switch (player.getState()) {
-                case WALK_LEFT:
-                    player.setState(EstadoPlayer.STOP_LEFT);
-                    break;
-                case WALK_RIGHT:
-                    player.setState(EstadoPlayer.STOP_RIGHT);
-                    break;
-            }
-        }
-        if (getMoveY() > 0) {
+            return;
+        } else if (getMoveY() > 0) {
             player.setState(EstadoPlayer.WALK_UP);
+            return;
         } else if (getMoveY() < 0) {
             player.setState(EstadoPlayer.WALK_DOWN);
-        } else {
-            switch (player.getState()) {
-                case WALK_DOWN:
-                    player.setState(EstadoPlayer.STOP_DOWN);
-                    break;
-                case WALK_UP:
-                    player.setState(EstadoPlayer.STOP_UP);
-                    break;
-            }
+            return;
+        }
+        switch (player.getState()) {
+            case WALK_DOWN:
+                player.setState(EstadoPlayer.STOP_DOWN);
+                break;
+            case WALK_UP:
+                player.setState(EstadoPlayer.STOP_UP);
+                break;
+            case WALK_LEFT:
+                player.setState(EstadoPlayer.STOP_LEFT);
+                break;
+            case WALK_RIGHT:
+                player.setState(EstadoPlayer.STOP_RIGHT);
+                break;
         }
     }
 }

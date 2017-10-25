@@ -37,7 +37,7 @@ public class Level extends ScreenAdapter {
         this.player = player;
         //Start map
         this.map = new TmxMapLoader().load("Mapas/Level" + level + ".tmx");
-        Vector2 spawnPos = new Vector2(247, 74);
+        Vector2 spawnPos = new Vector2(244, 68);
         try {
             TiledMapTileLayer layer = (TiledMapTileLayer) this.map.getLayers().get("Floor");
             spawnPos.set(layer.getCell(14, 14).getTile().getOffsetX(), layer.getCell(14, 14).getTile().getOffsetY());
