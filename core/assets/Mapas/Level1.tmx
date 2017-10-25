@@ -39,6 +39,9 @@
 </data>
  </layer>
  <layer name="Walls" width="20" height="20">
+  <properties>
+   <property name="blocked" type="bool" value="true"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

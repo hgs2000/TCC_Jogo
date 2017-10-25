@@ -12,7 +12,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 public class Level extends ScreenAdapter {
 
@@ -38,7 +37,7 @@ public class Level extends ScreenAdapter {
         this.player = player;
         //Start map
         this.map = new TmxMapLoader().load("Mapas/Level" + level + ".tmx");
-        Vector2 spawnPos = new Vector2();
+        Vector2 spawnPos = new Vector2(247, 74);
         try {
             TiledMapTileLayer layer = (TiledMapTileLayer) this.map.getLayers().get("Floor");
             spawnPos.set(layer.getCell(14, 14).getTile().getOffsetX(), layer.getCell(14, 14).getTile().getOffsetY());
@@ -46,11 +45,7 @@ public class Level extends ScreenAdapter {
 
         } catch (Exception ex) {
 
-            if (ex != null) {
-                System.out.println(ex.getMessage());
-            } else {
-                ex.printStackTrace();
-            }
+            System.out.println(ex.getMessage());
         }
         System.out.println("Spawn: " + spawnPos.x + "," + spawnPos.y);
 
@@ -63,6 +58,7 @@ public class Level extends ScreenAdapter {
         this.renderer.setView(camera);
         //Start playeranimation
         this.playerAnimation = player.getCurrentAnimation();
+        this.playerAnimation.setPlayMode(Animation.PlayMode.LOOP);
         this.batch = new SpriteBatch();
     }
 
@@ -76,7 +72,7 @@ public class Level extends ScreenAdapter {
 
     }
 
-    public MainGame getGame() {
+    MainGame getGame() {
         return game;
     }
 
@@ -84,19 +80,20 @@ public class Level extends ScreenAdapter {
         this.game = game;
     }
 
-    public int getMoveX() {
+    int getMoveX() {
         return moveX;
     }
 
-    public void setMoveX(int moveX) {
+
+    void setMoveX(int moveX) {
         this.moveX = moveX;
     }
 
-    public int getMoveY() {
+    int getMoveY() {
         return moveY;
     }
 
-    public void setMoveY(int moveY) {
+    void setMoveY(int moveY) {
         this.moveY = moveY;
     }
 

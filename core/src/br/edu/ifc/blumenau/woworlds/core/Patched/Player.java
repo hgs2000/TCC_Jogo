@@ -35,6 +35,7 @@ public class Player {
     //Fim declaração de variáveis
 
     //Construtores da classe
+
     /**
      * @param classe pode ser MAGO, CAVALEIRO ou ASSASSINO
      */
@@ -58,20 +59,60 @@ public class Player {
     //Métodos privados
     private void setAnimation() throws Exception {
         TextureRegion[][] load = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight() / 4);
-        TextureRegion[] frames = new TextureRegion[4 * 4];
+        TextureRegion[] frames = new TextureRegion[load.length * load[0].length];
+        int k = 0;
+        for (TextureRegion[] aLoad : load) {
+            for (TextureRegion anALoad : aLoad) {
+                frames[k++] = anALoad;
+            }
+        }
 
-        System.arraycopy(load[0], 0, frames, 0, 4);
-        walkingdown = new Animation<TextureRegion>(0.2f, frames);
+        //Bloco animação para baixo
+        TextureRegion anim[] = new TextureRegion[4];
+        for (int i = 0; i < 4; i++) {
+            anim[i] = frames[i];
+        }
+        walkingdown = new Animation<TextureRegion>(0.2f, anim);
 
-        //System.arraycopy(load[0], 0, frames, 4, 4);
-        System.arraycopy(load[1], 0, frames, 0, 4);
-        walkingup = new Animation<TextureRegion>(0.2f, frames);
+        anim = new TextureRegion[1];
+        anim[0] = frames[0];
+        stopdown = new Animation<TextureRegion>(0.2f, anim);
 
-        System.arraycopy(load[0], 0, frames, 8, 4);
-        walkingleft = new Animation<TextureRegion>(0.2f, frames);
+        //Bloco animação para cima
+        anim = new TextureRegion[4];
+        for (int i = 0; i < 4; i++) {
+            anim[i] = frames[i + 4];
+        }
+        walkingup = new Animation<TextureRegion>(0.2f, anim);
 
-        System.arraycopy(load[0], 0, frames, 12, 4);
-        walkingright = new Animation<TextureRegion>(0.2f, frames);
+        anim = new TextureRegion[1];
+        anim[0] = frames[4];
+        stopup = new Animation<TextureRegion>(0.2f, anim);
+
+        //Bloco animação para esquerda
+        anim = new TextureRegion[4];
+        for (int i = 0; i < 4; i++) {
+            anim[i] = frames[i + 8];
+        }
+        walkingleft = new Animation<TextureRegion>(0.2f, anim);
+
+        anim = new TextureRegion[1];
+        anim[0] = frames[8];
+        stopleft = new Animation<TextureRegion>(0.2f, anim);
+
+
+        //Bloco animação para direita
+        anim = new TextureRegion[4];
+        for (int i = 0; i < 4; i++) {
+            anim[i] = frames[i + 12];
+        }
+        walkingright = new Animation<TextureRegion>(0.2f, anim);
+
+        anim = new TextureRegion[1];
+        anim[0] = frames[12];
+        stopright = new Animation<TextureRegion>(0.2f, anim);
+
+
     }
 
     //Métodos públicos
@@ -127,17 +168,31 @@ public class Player {
      * Muda o estado atual do jogador
      *
      * @param current STOP_DOWN, STOP_UP, STOP_LEFT, STOP_RIGHT, <br>
-     * WALK_DOWN, WALK_UP, WALK_LEFT, WALK_RIGHT
+     *                WALK_DOWN, WALK_UP, WALK_LEFT, WALK_RIGHT
      */
     public void changeState(EstadoPlayer current) {
         this.state = current;
     }
 
     Animation<TextureRegion> getCurrentAnimation() {
-        //switch (state) {
-        //          case WALK_DOWN:
-        return walkingdown;
-        //    }
+        switch (state) {
+            case WALK_DOWN:
+                return walkingdown;
+            case STOP_DOWN:
+                return stopdown;
+            case WALK_UP:
+                return walkingup;
+            case STOP_UP:
+                return stopup;
+            case WALK_LEFT:
+                return walkingleft;
+            case STOP_LEFT:
+                return stopleft;
+            case WALK_RIGHT:
+                return stopright;
+            default:
+                return stopdown;
+        }
     }
 
 }
