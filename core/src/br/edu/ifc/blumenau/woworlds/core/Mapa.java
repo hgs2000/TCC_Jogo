@@ -162,8 +162,8 @@ public class Mapa extends ScreenAdapter {
             player.setY(oldY);
         }
         if (portal) {
-            TCC.actual += 1;
-            game.setScreen(TCC.mapas.get(TCC.actual));
+            TCC.currentMapPos += 1;
+            game.setScreen(TCC.mapas.get(TCC.currentMapPos));
         }
 
         for (Inimigo ini : inimigos) {

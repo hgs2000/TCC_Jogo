@@ -35,7 +35,6 @@ public class Player {
     //Fim declaração de variáveis
 
     //Construtores da classe
-
     /**
      * @param classe pode ser MAGO, CAVALEIRO ou ASSASSINO
      */
@@ -99,7 +98,6 @@ public class Player {
         anim = new TextureRegion[1];
         anim[0] = frames[8];
         stopleft = new Animation<TextureRegion>(0.2f, anim);
-
 
         //Bloco animação para direita
         anim = new TextureRegion[4];
@@ -167,7 +165,7 @@ public class Player {
      * Muda o estado atual do jogador
      *
      * @param current STOP_DOWN, STOP_UP, STOP_LEFT, STOP_RIGHT, <br>
-     *                WALK_DOWN, WALK_UP, WALK_LEFT, WALK_RIGHT
+     * WALK_DOWN, WALK_UP, WALK_LEFT, WALK_RIGHT
      */
     public void changeState(EstadoPlayer current) {
         this.state = current;
@@ -188,6 +186,8 @@ public class Player {
             case STOP_LEFT:
                 return stopleft;
             case WALK_RIGHT:
+                return walkingright;
+            case STOP_RIGHT:
                 return stopright;
             default:
                 return stopdown;

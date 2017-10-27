@@ -64,18 +64,19 @@ public class Level1 extends Level {
             return;
         }
         switch (player.getState()) {
-            case WALK_DOWN:
-                player.setState(EstadoPlayer.STOP_DOWN);
-                break;
-            case WALK_UP:
-                player.setState(EstadoPlayer.STOP_UP);
+            case WALK_RIGHT:
+                player.setState(EstadoPlayer.STOP_RIGHT);
                 break;
             case WALK_LEFT:
                 player.setState(EstadoPlayer.STOP_LEFT);
                 break;
-            case WALK_RIGHT:
-                player.setState(EstadoPlayer.STOP_RIGHT);
+            case WALK_UP:
+                player.setState(EstadoPlayer.STOP_UP);
                 break;
+            case WALK_DOWN:
+                player.setState(EstadoPlayer.STOP_DOWN);
+                break;
+
         }
     }
 }

@@ -1,5 +1,6 @@
 package br.edu.ifc.blumenau.woworlds.desktop;
 
+import br.edu.ifc.blumenau.woworlds.core.Patched.GameStart;
 import br.edu.ifc.blumenau.woworlds.core.TCC;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -17,6 +18,6 @@ public class DesktopLauncher {
         config.useHDPI = true;
         config.foregroundFPS = 30;
         config.addIcon("icon.png", Files.FileType.Internal);
-        new LwjglApplication(new TCC(), config);
+        new LwjglApplication(new GameStart(), config);
     }
 }

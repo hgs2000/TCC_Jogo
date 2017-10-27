@@ -38,38 +38,43 @@ public class Level extends ScreenAdapter {
         //Start map
         this.map = new TmxMapLoader().load("Mapas/Level" + level + ".tmx");
         Vector2 spawnPos = new Vector2(244, 68);
+        TiledMapTileLayer layer = (TiledMapTileLayer) this.map.getLayers().get(0);
+        Vector2 size = new Vector2(layer.getWidth(), layer.getHeight());
         try {
-            TiledMapTileLayer layer = (TiledMapTileLayer) this.map.getLayers().get("Floor");
-            spawnPos.set(layer.getCell(14, 14).getTile().getOffsetX(), layer.getCell(14, 14).getTile().getOffsetY());
+            for (int x = 0; x < size.x - 1; x++) {
+                for (int y = 0; y < size.y - 1; y++) {
+                    TiledMapTileLayer.Cell cell = layer.getCell(14, y);
+                    if (cell != null) {
+                        Object property = cell.getTile().getProperties().get("spawn");
+                        if (property != null) {
+                            spawnPos.set(x, y);
+                            throw new Exception("Found");
+                        }
+                    }
+                }
+            }
+            System.out.println(size.x + " : " + size.y);
             throw new Exception("NotFound");
-
         } catch (Exception ex) {
-
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
+
         System.out.println("Spawn: " + spawnPos.x + "," + spawnPos.y);
 
         //Start camera
         this.camera = camera;
         this.camera.position.set(spawnPos, 0);
         this.camera.update();
+
         //Start renderer
         this.renderer = new OrthogonalTiledMapRenderer(this.map, 0.5f);
         this.renderer.setView(camera);
+
         //Start playeranimation
         this.playerAnimation = player.getCurrentAnimation();
         this.playerAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
         this.batch = new SpriteBatch();
-    }
-
-    @Override
-    public void show() {
-
-    }
-
-    @Override
-    public void render(float delta) {
-
     }
 
     MainGame getGame() {
@@ -84,7 +89,6 @@ public class Level extends ScreenAdapter {
         return moveX;
     }
 
-
     void setMoveX(int moveX) {
         this.moveX = moveX;
     }
@@ -97,7 +101,7 @@ public class Level extends ScreenAdapter {
         this.moveY = moveY;
     }
 
-    private void changeAnimation() {
+    void changeAnimation() {
         playerAnimation = player.getCurrentAnimation();
     }
 }

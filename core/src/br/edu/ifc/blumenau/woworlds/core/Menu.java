@@ -46,8 +46,8 @@ public class Menu extends ScreenAdapter {
             int h = Gdx.graphics.getHeight();
             int w = Gdx.graphics.getWidth();
             if (((x > 44) && (x < 346)) && ((y < h - 450) && (y > h - (500)))) {
-                TCC.actual += 1;
-                GAME.setScreen(TCC.mapas.get(TCC.actual));
+                TCC.currentMapPos += 1;
+                GAME.setScreen(TCC.mapas.get(TCC.currentMapPos));
             }
             if (((x > 44) && (x < 346)) && ((y < h - 380) && (y > h - (430)))) {
                 //evento quando clica no botão loadGame
