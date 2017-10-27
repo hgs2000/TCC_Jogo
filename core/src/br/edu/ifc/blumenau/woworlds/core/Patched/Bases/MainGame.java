@@ -7,6 +7,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+
 import static br.edu.ifc.blumenau.woworlds.core.Patched.Bases.Classe.INICIADOR;
 
 /**
@@ -27,6 +28,7 @@ public class MainGame extends Game {
 
     //Fim declaração de variáveis </editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Iniciador">
+
     /**
      * Called when the {@link Application} is first created.
      */
