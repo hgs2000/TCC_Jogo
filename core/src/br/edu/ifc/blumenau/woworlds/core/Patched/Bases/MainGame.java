@@ -1,5 +1,6 @@
 package br.edu.ifc.blumenau.woworlds.core.Patched.Bases;
 
+import br.edu.ifc.blumenau.woworlds.core.InputProcessor;
 import br.edu.ifc.blumenau.woworlds.core.Patched.GameStart;
 import br.edu.ifc.blumenau.woworlds.core.Patched.Level1;
 import br.edu.ifc.blumenau.woworlds.core.Patched.Player;
@@ -41,7 +42,7 @@ public class MainGame extends Game {
         this.camera.position.x = 248;
         this.camera.update();
         this.setScreen(new Level1(this, new Player(INICIADOR), camera, 1));
-        Gdx.input.setInputProcessor(new InputProcessor((GameStart) this));
+        //Gdx.input.setInputProcessor(new InputProcessor((GameStart) this));
 
     }
     //</editor-fold>

@@ -15,8 +15,6 @@ public class PlayerInGame extends Sprite {
     public void draw(Batch batch) {
         super.draw(batch);
     }
-    
-    
 
 
 }

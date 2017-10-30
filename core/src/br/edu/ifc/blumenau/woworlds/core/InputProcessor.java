@@ -1,21 +1,20 @@
-package br.edu.ifc.blumenau.woworlds.core.Patched.Bases;
+package br.edu.ifc.blumenau.woworlds.core;
 
-import br.edu.ifc.blumenau.woworlds.core.Patched.GameStart;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
 public class InputProcessor extends InputAdapter {
 
-    GameStart game;
+    private TCC game;
 
-    public InputProcessor(GameStart screen) {
-        this.game = screen;
+    public InputProcessor(TCC jogo) {
+        this.game = jogo;
     }
 
     //<editor-fold defaultstate="collapsed" desc="Controle Tecla Pressionada">
     @Override
     public boolean keyDown(int keycode) {
-        String pressed;
+        String pressed = "";
         switch (keycode) {
             case Input.Keys.A:
                 pressed = "Left Pressed;";
@@ -32,6 +31,9 @@ public class InputProcessor extends InputAdapter {
             case Input.Keys.S:
                 pressed = "Down Pressed;";
                 game.setMoveDown(true);
+                break;
+            case Input.Keys.ESCAPE:
+                System.exit(0);
                 break;
             default:
                 pressed = "All Released";

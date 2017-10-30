@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -28,6 +29,9 @@ public class Level extends ScreenAdapter {
     float stateTime = 0;
     private Animation<TextureRegion> playerAnimation;
 
+
+    private MapObjects collision;
+
     public Animation<TextureRegion> getPlayerAnimation() {
         return playerAnimation;
     }
@@ -40,26 +44,8 @@ public class Level extends ScreenAdapter {
         Vector2 spawnPos = new Vector2(244, 68);
         TiledMapTileLayer layer = (TiledMapTileLayer) this.map.getLayers().get(0);
         Vector2 size = new Vector2(layer.getWidth(), layer.getHeight());
-        try {
-            for (int x = 0; x < size.x - 1; x++) {
-                for (int y = 0; y < size.y - 1; y++) {
-                    TiledMapTileLayer.Cell cell = layer.getCell(14, y);
-                    if (cell != null) {
-                        Object property = cell.getTile().getProperties().get("spawn");
-                        if (property != null) {
-                            spawnPos.set(x, y);
-                            throw new Exception("Found");
-                        }
-                    }
-                }
-            }
-            System.out.println(size.x + " : " + size.y);
-            throw new Exception("NotFound");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
 
-        System.out.println("Spawn: " + spawnPos.x + "," + spawnPos.y);
+        //System.out.println("Spawn: " + spawnPos.x + "," + spawnPos.y);
 
         //Start camera
         this.camera = camera;
@@ -69,6 +55,9 @@ public class Level extends ScreenAdapter {
         //Start renderer
         this.renderer = new OrthogonalTiledMapRenderer(this.map, 0.5f);
         this.renderer.setView(camera);
+
+        //Start as colisões do mapa
+        this.collision = map.getLayers().get(1).getObjects();
 
         //Start playeranimation
         this.playerAnimation = player.getCurrentAnimation();
@@ -104,4 +93,22 @@ public class Level extends ScreenAdapter {
     void changeAnimation() {
         playerAnimation = player.getCurrentAnimation();
     }
+
+    public MapObjects getCollision() {
+        return collision;
+    }
+
+    public void setCollision(MapObjects collision) {
+        this.collision = collision;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+
 }

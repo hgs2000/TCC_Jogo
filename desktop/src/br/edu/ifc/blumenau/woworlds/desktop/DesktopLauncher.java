@@ -16,7 +16,7 @@ public class DesktopLauncher {
         config.fullscreen = false;
         config.resizable = false;
         config.useHDPI = true;
-        config.foregroundFPS = 30;
+        //config.foregroundFPS = 30;
         config.addIcon("icon.png", Files.FileType.Internal);
         new LwjglApplication(new TCC(), config);
     }
