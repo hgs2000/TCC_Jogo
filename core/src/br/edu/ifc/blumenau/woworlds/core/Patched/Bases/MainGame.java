@@ -10,13 +10,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import static br.edu.ifc.blumenau.woworlds.core.Patched.Bases.Classe.INICIADOR;
+import br.edu.ifc.blumenau.woworlds.core.TCC;
 
 /**
  * Classe que extends Game
  *
  * @author tads
  */
-public class MainGame extends Game {
+public class MainGame extends TCC {
 
     //<editor-fold defaultstate="collapsed" desc="Variáveis">
     //Declaração de variáveis
@@ -29,7 +30,6 @@ public class MainGame extends Game {
 
     //Fim declaração de variáveis </editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Iniciador">
-
     /**
      * Called when the {@link Application} is first created.
      */
@@ -42,7 +42,7 @@ public class MainGame extends Game {
         this.camera.position.x = 248;
         this.camera.update();
         this.setScreen(new Level1(this, new Player(INICIADOR), camera, 1));
-        //Gdx.input.setInputProcessor(new InputProcessor((GameStart) this));
+        Gdx.input.setInputProcessor(new InputProcessor(this));
 
     }
     //</editor-fold>

@@ -12,6 +12,7 @@ public class Jogador {
     private int vida;
     private int dano = 5;
     private EstadoJogador estado_atual;
+    private float velocidade;
     //End status
 
     //<editor-fold> Propriedades visuais
@@ -26,6 +27,12 @@ public class Jogador {
     private Animation<TextureRegion> walkingright;
     private Animation<TextureRegion> stopright;
     //Fim declaração de variáveis
+    //Jogador pode mover?
+    private boolean canMoveUp = true;
+    private boolean canMoveDown = true;
+    private boolean canMoveLeft = true;
+    private boolean canMoveRight = true;
+    //Fim move
 
     private Item[] inventario;
     private Equipamento arma, cinto, anel, energyS;
@@ -67,7 +74,6 @@ public class Jogador {
         this.experience_points = experience_points;
     }
 
-
     public void addXP(int xp) {
         this.experience_points += xp;
     }
@@ -97,7 +103,12 @@ public class Jogador {
                 this.vida = this.vida_maxima;
                 this.nivel = 1;
                 this.dano = 5;
+                this.velocidade = 2f;
         }
+    }
+
+    public float getVelocidade() {
+        return this.velocidade;
     }
 
     public void setEstadoAtual(EstadoJogador current) {
@@ -187,6 +198,41 @@ public class Jogador {
         }
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Jogador pode se mover (pode ou definir se pode)">
+    public boolean isCanMoveUp() {
+        return canMoveUp;
+    }
+
+    public void setCanMoveUp(boolean canMoveUp) {
+        this.canMoveUp = canMoveUp;
+    }
+
+    public boolean isCanMoveDown() {
+        return canMoveDown;
+    }
+
+    public void setCanMoveDown(boolean canMoveDown) {
+        this.canMoveDown = canMoveDown;
+    }
+
+    public boolean isCanMoveLeft() {
+        return canMoveLeft;
+    }
+
+    public void setCanMoveLeft(boolean canMoveLeft) {
+        this.canMoveLeft = canMoveLeft;
+    }
+
+    public boolean isCanMoveRight() {
+        return canMoveRight;
+    }
+
+    public void setCanMoveRight(boolean canMoveRight) {
+        this.canMoveRight = canMoveRight;
+    }
+    //</editor-fold>
+
+    //Recebe a classe atual do jogador
     public String getClasse() {
         return classe.toString();
     }
@@ -208,6 +254,7 @@ public class Jogador {
         }
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Enums do Jogador">
     enum ClasseJogador {
         INICIADOR, MAGO, CAVALEIRO, ASSASSINO
     }
@@ -216,6 +263,6 @@ public class Jogador {
         STOP_DOWN, STOP_UP, STOP_LEFT, STOP_RIGHT,
         WALK_DOWN, WALK_UP, WALK_LEFT, WALK_RIGHT
     }
+    //</editor-fold>
 
 }
-

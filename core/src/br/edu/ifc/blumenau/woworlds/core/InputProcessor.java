@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputAdapter;
 
 public class InputProcessor extends InputAdapter {
 
-    private TCC game;
+    private final TCC game;
 
     public InputProcessor(TCC jogo) {
         this.game = jogo;

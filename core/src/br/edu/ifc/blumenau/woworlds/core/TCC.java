@@ -11,25 +11,23 @@ import java.util.ArrayList;
 
 public class TCC extends Game {
 
-    static ArrayList<Mapa> mapas = new ArrayList<>();
+    static ArrayList<Mapa> mapas = new ArrayList<Mapa>();
     static int currentMapPos = -1;
     SaveGame save;
     static boolean op = true;
     private Jogador jogador;
     private Animation<TextureRegion> player_animation;
 
-
     private boolean moveUp;
     private boolean moveDown;
     private boolean moveLeft;
     private boolean moveRight;
 
-
     @Override
     public void create() {
         jogador = new Jogador();
         player_animation = jogador.getCurrentAnimation();
-        ArrayList<Inimigo> ini = new ArrayList<>();
+        ArrayList<Inimigo> ini = new ArrayList();
         ini.add(new Inimigo(new Sprite(new Texture(Gdx.files.internal("ske.png"))), 150, 200));
         mapas.add(new Mapa(jogador, this, "Mapas/Level1.tmx", "player.png", 200, 150, ini));
         //mapas.add(new Mapa(jogador, this, "Mapas/Level1.tmx", player_animation, 200, 150, ini));
@@ -37,6 +35,7 @@ public class TCC extends Game {
         Gdx.input.setInputProcessor(new InputProcessor(this));
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Movimentação">
     public boolean isMoveUp() {
         return moveUp;
     }
@@ -68,5 +67,6 @@ public class TCC extends Game {
     public void setMoveRight(boolean moveRight) {
         this.moveRight = moveRight;
     }
+    //</editor-fold>
 
 }

@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import java.util.ArrayList;
-
 public class Menu extends ScreenAdapter {
 
     private final SpriteBatch BATCH;
@@ -46,7 +44,8 @@ public class Menu extends ScreenAdapter {
             int h = Gdx.graphics.getHeight();
             int w = Gdx.graphics.getWidth();
             if (((x > 44) && (x < 346)) && ((y < h - 450) && (y > h - (500)))) {
-                TCC.currentMapPos += 1;
+                TCC.currentMapPos = 0;
+
                 GAME.setScreen(TCC.mapas.get(TCC.currentMapPos));
             }
             if (((x > 44) && (x < 346)) && ((y < h - 380) && (y > h - (430)))) {

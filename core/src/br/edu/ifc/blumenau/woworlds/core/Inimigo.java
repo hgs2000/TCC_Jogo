@@ -26,38 +26,30 @@ public class Inimigo extends Sprite {
     int passos = -1;
     Random gen = new Random();
     String imgPath;
-    
-    
-    
+
     public void move(Sprite player, float delta, TiledMapTileLayer cLayer) {
-        
-        
-        
-        if(traped){
-            switch(passos){
-                case(0):
+
+        if (traped) {
+            switch (passos) {
+                case (0):
                     this.setY(this.getY() + (60 * 2f * delta));
                     break;
-                case(1):
+                case (1):
                     this.setY(this.getY() - (60 * 2f * delta));
                     break;
-                 case(2):
+                case (2):
                     this.setX(this.getX() + (60 * 2f * delta));
                     break;
-                case(3):
+                case (3):
                     this.setX(this.getX() - (60 * 2f * delta));
                     break;
             }
             traped = false;
         }
-        
-        
-        
+
         tW = this.getWidth();
         tH = this.getHeight();
-        
-        
-        
+
         if (player.getX() > this.getX()) {
             this.setX(this.getX() + (60 * 0.5f * delta));
             directX = true;
@@ -74,23 +66,20 @@ public class Inimigo extends Sprite {
             this.setY(this.getY() - (60 * 0.5f * delta));
             directY = false;
         }
-        if(gen.nextBoolean()){
+        if (gen.nextBoolean()) {
             this.setY(this.getY() - (60 * (gen.nextInt(5) / 10f) * delta));
-        }else{
-             this.setY(this.getY() - (60 * (gen.nextInt(5) / 10f) * delta));
+        } else {
+            this.setY(this.getY() - (60 * (gen.nextInt(5) / 10f) * delta));
         }
         //if(gen.nextBoolean()){
-         //   this.setX(this.getX() - (60 * (gen.nextInt(10) / 10f) * delta));
+        //   this.setX(this.getX() - (60 * (gen.nextInt(10) / 10f) * delta));
         //}else{
-         //    this.setX(this.getX() - (60 * (gen.nextInt(10) / 10f) * delta));
+        //    this.setX(this.getX() - (60 * (gen.nextInt(10) / 10f) * delta));
         //}
-        
-        
-        
-        
+
         //colisão
         //top left
-        if (!directX) {
+        /*if (!directX) {
 
             cX = cLayer.getCell((int) (this.getX() / tW), (int) ((this.getY() + this.getHeight()) / tW)).getTile().getProperties().containsKey("solid");
             
@@ -135,7 +124,7 @@ public class Inimigo extends Sprite {
                 cY = cLayer.getCell((int) ((this.getX() + this.getWidth()) / tW), (int) ((this.getY() + this.getHeight()) / tH)).getTile().getProperties().containsKey("solid");
             }
         }
-
+         */
         //end colisão
         if (cX) {
             cX = false;
@@ -147,13 +136,12 @@ public class Inimigo extends Sprite {
         }
         oldX = this.getX();
         oldY = this.getY();
-        if((this.getX() == oldX) && (this.getY() == oldY)){
+        if ((this.getX() == oldX) && (this.getY() == oldY)) {
             traped = true;
             passos += 1;
-        }else{
+        } else {
             passos = -1;
         }
-        
     }
 
     public Inimigo(Sprite sprite, int x, int y) {
