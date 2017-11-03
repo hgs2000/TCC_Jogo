@@ -7,12 +7,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Mapa extends ScreenAdapter {
 
@@ -23,7 +28,7 @@ public class Mapa extends ScreenAdapter {
     private PlayerInGame player_sprite;
 
     //
-    private boolean collisionMap[][];
+    private boolean[][] collisionMap = {{false}, {false}};
     //
     private Animation<TextureRegion> player_anim;
     private SpriteBatch batch;
@@ -63,6 +68,23 @@ public class Mapa extends ScreenAdapter {
         this.batch = new SpriteBatch();
         this.cLayer = (TiledMapTileLayer) map.getLayers().get("Walls");
         this.collisionMap = new boolean[this.cLayer.getWidth()][this.cLayer.getHeight()];
+        //System.out.println(this.collisionMap.length);
+        MapProperties keys;
+        for (int y = 0; y < this.collisionMap.length; y++) {
+            for (int x = 0; x < this.collisionMap[y].length; x++) {
+                try {
+                    keys = cLayer.getCell(x, y).getTile().getProperties();
+                    //System.out.println(keys.get("solid"));
+                    if ((boolean) (keys.get("solid")) == true) {
+                        //System.out.println("yes");
+                        this.collisionMap[y][x] = true;
+                    }
+                } catch (NullPointerException ex) {
+                    keys = null;
+                    System.out.println("false");
+                }
+            }
+        }
     }
 
     public Mapa(Jogador ps, TCC game, String mapPath, Animation<TextureRegion> player, int playerStartX, int playerStartY, ArrayList<Inimigo> inimigos) {
@@ -93,7 +115,7 @@ public class Mapa extends ScreenAdapter {
 
         //tW = cLayer.getTileWidth();
         //tH = cLayer.getTileHeight();
-        hud = new Sprite(new Texture("hud.png"));//HUD PADRAO HERE
+        hud = new Sprite(new Texture("hud.png"));//HUD PADRÃO HERE
 
         for (Inimigo ini : inimigos) {
             ini.setPosition(ini.x, ini.y);
@@ -268,7 +290,7 @@ public class Mapa extends ScreenAdapter {
         //Fim muda animação </editor-fold>
 
         System.out.println(delta);
-        
+
         camera.position.x += getMoveX();
         camera.position.y += getMoveY();
 
@@ -331,7 +353,7 @@ public class Mapa extends ScreenAdapter {
         boolean collisionBlock[][] = new boolean[3][3];
 
         if (player_sprite.getY() + (60 * 1.8f * delta) == 1) {
-
+            System.out.println("Collision");
         }
 
         if (canUp && canDown && canLeft && canRight && false) {
