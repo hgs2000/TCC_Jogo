@@ -12,12 +12,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class Mapa extends ScreenAdapter {
 
@@ -28,11 +24,17 @@ public class Mapa extends ScreenAdapter {
     private PlayerInGame player_sprite;
 
     //
-    private boolean[][] collisionMap = {{false}, {false}};
+    private boolean[][] collision_map = {{false}, {false}};
     //
+    private String[][] collision_map_position = {{"null"}, {"null"}};
+    //
+    private
+    //
+
     private Animation<TextureRegion> player_anim;
     private SpriteBatch batch;
     private float state_time = 0f;
+
 
     private int moveX = 0;
     private int moveY = 0;
@@ -53,7 +55,7 @@ public class Mapa extends ScreenAdapter {
 
     private float oldX, oldY;
     private boolean cX = false, cY = false, portal = false;
-    private boolean directX, directY;//true +; false -
+    //private boolean directX, directY;//true +; false -
     //===========================
 
     public Mapa(Jogador ps, TCC game, String mapPath, String playerImg, int playerStartX, int playerStartY, ArrayList<Inimigo> inimigos) {
@@ -67,22 +69,27 @@ public class Mapa extends ScreenAdapter {
         this.inimigos = inimigos;
         this.batch = new SpriteBatch();
         this.cLayer = (TiledMapTileLayer) map.getLayers().get("Walls");
-        this.collisionMap = new boolean[this.cLayer.getWidth()][this.cLayer.getHeight()];
-        //System.out.println(this.collisionMap.length);
+        this.collision_map = new boolean[this.cLayer.getWidth()][this.cLayer.getHeight()];
+        //System.out.println(this.collision_map.length);
+        startCollisions();
+    }
+
+    private void startCollisions() {
         MapProperties keys;
-        for (int y = 0; y < this.collisionMap.length; y++) {
-            for (int x = 0; x < this.collisionMap[y].length; x++) {
+        for (int y = 0; y < this.collision_map.length; y++) {
+            for (int x = 0; x < this.collision_map[y].length; x++) {
                 try {
                     keys = cLayer.getCell(x, y).getTile().getProperties();
                     //System.out.println(keys.get("solid"));
                     if ((boolean) (keys.get("solid")) == true) {
                         //System.out.println("yes");
-                        this.collisionMap[y][x] = true;
+                        this.collision_map[y][x] = true;
                     }
                 } catch (NullPointerException ex) {
                     keys = null;
                     System.out.println("false");
                 }
+                collision_map_position[x - 1][y - 1] = "" + "";
             }
         }
     }
@@ -91,24 +98,24 @@ public class Mapa extends ScreenAdapter {
         this.jogador = ps;
         this.game = game;
         this.map = new TmxMapLoader().load(mapPath);
-        //this.playerImg = null;
+        this.player_sprite = null;
         this.player_anim = player;
         this.playerStartX = playerStartX;
         this.playerStartY = playerStartY;
         this.inimigos = inimigos;
         this.batch = new SpriteBatch();
+        startCollisions();
     }
 
     @Override
     public void show() {
-
         renderer = new OrthogonalTiledMapRenderer(map);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2);
         //camera.zoom = 5f;
 
-        if (player_sprite == null) {
+        if (player_sprite != null) {
 
             player_sprite.setPosition(playerStartX, playerStartY);
         }
@@ -234,88 +241,127 @@ public class Mapa extends ScreenAdapter {
             TCC.currentMapPos += 1;
             game.setScreen(TCC.mapas.get(TCC.currentMapPos));
         }*/
-
-        for (Inimigo ini : inimigos) {
-            if (((ini.getX() - player_sprite.getX()) < 20) && ((ini.getX() - player_sprite.getX()) > -20)) {
-                if (((ini.getY() - player_sprite.getY()) < 20) && ((ini.getY() - player_sprite.getY()) > -20)) {
-                    jogador.setVida(jogador.getVida() - 1);
-                }
-            }
-        }
-
-        if (jogador.getVida() <= 0) {
-            game.setScreen(new Menu(game));
-        }
-
-        int contInis = inimigos.size();
-        for (int i = 0; i < inimigos.size(); i++) {
-            inimigos.get(i).move(player_sprite, delta, cLayer);
-            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                if (((inimigos.get(i).getX() - player_sprite.getX()) < 50) && ((inimigos.get(i).getX() - player_sprite.getX()) > -50)) {
-                    if (((inimigos.get(i).getY() - player_sprite.getY()) < 50) && ((inimigos.get(i).getY() - player_sprite.getY()) > -50)) {
-                        inimigos.get(i).vida -= jogador.getDano();
+        if (player_sprite != null) {
+            for (Inimigo ini : inimigos) {
+                if (((ini.getX() - player_sprite.getX()) < 20) && ((ini.getX() - player_sprite.getX()) > -20)) {
+                    if (((ini.getY() - player_sprite.getY()) < 20) && ((ini.getY() - player_sprite.getY()) > -20)) {
+                        jogador.setVida(jogador.getVida() - 1);
                     }
                 }
             }
-            if (inimigos.get(i).vida <= 0) {
-                inimigos.remove(i);
+
+            if (jogador.getVida() <= 0) {
+                game.setScreen(new Menu(game));
+            }
+
+            int contInis = inimigos.size();
+            for (int i = 0; i < inimigos.size(); i++) {
+                inimigos.get(i).move(player_sprite, delta, cLayer);
+                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                    if (((inimigos.get(i).getX() - player_sprite.getX()) < 50) && ((inimigos.get(i).getX() - player_sprite.getX()) > -50)) {
+                        if (((inimigos.get(i).getY() - player_sprite.getY()) < 50) && ((inimigos.get(i).getY() - player_sprite.getY()) > -50)) {
+                            inimigos.get(i).vida -= jogador.getDano();
+                        }
+                    }
+                }
+                if (inimigos.get(i).vida <= 0) {
+                    inimigos.remove(i);
                 /*inimigos.get(i).vida = 5;
                 inimigos.get(i).setPosition(100, 150);*/
-                jogador.addXP(1);
-                jogador.getCurrentLevel();
+                    jogador.addXP(1);
+                    jogador.getCurrentLevel();
+                }
             }
-        }
 
-        //<editor-fold defaultstate="collapsed" desc="Muda animação">
-        if (game.isMoveDown() == true && game.isMoveUp() == true) {
-            setMoveY(0);
-        } else if (game.isMoveDown() == true && game.isMoveUp() == false) {
-            setMoveY(-1);
-        } else if (game.isMoveDown() == false && game.isMoveUp() == true) {
-            setMoveY(1);
+            //<editor-fold defaultstate="collapsed" desc="Muda animação">
+            if (game.isMoveDown() == true && game.isMoveUp() == true) {
+                setMoveY(0);
+            } else if (game.isMoveDown() == true && game.isMoveUp() == false) {
+                setMoveY(-1);
+            } else if (game.isMoveDown() == false && game.isMoveUp() == true) {
+                setMoveY(1);
+            } else {
+                setMoveY(getMoveY() - getMoveY());
+            }
+
+            if (game.isMoveDown() == true && game.isMoveRight() == true) {
+                setMoveX(0);
+            } else if (game.isMoveLeft() == true && game.isMoveRight() == false) {
+                setMoveX(-1);
+            } else if (game.isMoveLeft() == false && game.isMoveRight() == true) {
+                setMoveX(1);
+            } else {
+                setMoveX(getMoveX() - getMoveX());
+            }
+            setAnimation();
+            //Fim muda animação </editor-fold>
+
+            //System.out.println(delta);
+
+            camera.position.x += getMoveX();
+            camera.position.y += getMoveY();
+
+            camera.zoom = 0.75f;
+            camera.update();
+
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+            renderer.setView(camera);
+            renderer.render();
+
+            batch.begin();
+            for (Inimigo ini : inimigos) {
+                ini.draw(batch);
+            }
+            player_anim = jogador.getCurrentAnimation();
+            //System.out.println("Estado atual: " + ps.getEstadoAtual());
+
+            batch.draw(player_anim.getKeyFrame(state_time), Gdx.graphics.getWidth() / 2 - player_anim.getKeyFrame(state_time).getRegionWidth() / 2, Gdx.graphics.getHeight() / 2 - player_anim.getKeyFrame(state_time).getRegionHeight() / 2, 75, 75);
+            hpPlayer.draw(batch, "Vida: " + Integer.toString(jogador.getVida()), 10, 50);
+            lvPlayer.draw(batch, "Level" + Integer.toString(jogador.getNivel()), 10, 100);
+            player_sprite.draw(batch);
+            hud.draw(batch);
+            batch.end();
         } else {
-            setMoveY(getMoveY() - getMoveY());
+            //System.out.println("Ok");
+            Gdx.gl20.glClearColor(0, 0, 0, 1);
+
+            state_time += Gdx.graphics.getDeltaTime();
+            Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+            renderer.setView(camera);
+            renderer.render();
+
+            TextureRegion curPlayerFrame = jogador.getCurrentAnimation().getKeyFrame(state_time, true);
+            batch.begin();
+            batch.draw(jogador.getCurrentAnimation().getKeyFrame(state_time, true), Gdx.graphics.getWidth() / 2 - curPlayerFrame.getRegionWidth() / 2, Gdx.graphics.getHeight() / 2 - curPlayerFrame.getRegionHeight() / 2, 75, 75);
+            batch.end();
+
+            if (game.isMoveDown() == true && game.isMoveUp() == true) {
+                setMoveY(0);
+            } else if (game.isMoveDown() == true && game.isMoveUp() == false) {
+                setMoveY(-1);
+            } else if (game.isMoveDown() == false && game.isMoveUp() == true) {
+                setMoveY(1);
+            } else {
+                setMoveY(getMoveY() - getMoveY());
+            }
+
+            if (game.isMoveLeft() == true && game.isMoveRight() == true) {
+                setMoveX(0);
+            } else if (game.isMoveLeft() == true && game.isMoveRight() == false) {
+                setMoveX(-1);
+            } else if (game.isMoveLeft() == false && game.isMoveRight() == true) {
+                setMoveX(1);
+            } else {
+                setMoveX(getMoveX() - getMoveX());
+            }
+            setAnimation();
+            camera.translate(getMoveX(), getMoveY());
+            camera.update();
         }
 
-        if (game.isMoveDown() == true && game.isMoveRight() == true) {
-            setMoveX(0);
-        } else if (game.isMoveLeft() == true && game.isMoveRight() == false) {
-            setMoveX(-1);
-        } else if (game.isMoveLeft() == false && game.isMoveRight() == true) {
-            setMoveX(1);
-        } else {
-            setMoveX(getMoveX() - getMoveX());
-        }
-        setAnimation();
-        //Fim muda animação </editor-fold>
-
-        System.out.println(delta);
-
-        camera.position.x += getMoveX();
-        camera.position.y += getMoveY();
-
-        camera.zoom = 0.75f;
-        camera.update();
-
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        renderer.setView(camera);
-        renderer.render();
-
-        batch.begin();
-        for (Inimigo ini : inimigos) {
-            ini.draw(batch);
-        }
-        player_anim = jogador.getCurrentAnimation();
-        //System.out.println("Estado atual: " + ps.getEstadoAtual());
-
-        batch.draw(player_anim.getKeyFrame(state_time), Gdx.graphics.getWidth() / 2 - player_anim.getKeyFrame(state_time).getRegionWidth() / 2, Gdx.graphics.getHeight() / 2 - player_anim.getKeyFrame(state_time).getRegionHeight() / 2, 75, 75);
-        hpPlayer.draw(batch, "Vida: " + Integer.toString(jogador.getVida()), 10, 50);
-        lvPlayer.draw(batch, "Level" + Integer.toString(jogador.getNivel()), 10, 100);
-        player_sprite.draw(batch);
-        hud.draw(batch);
-        batch.end();
     }
 
     private void setAnimation() {

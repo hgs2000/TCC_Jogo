@@ -15,13 +15,11 @@ public class TCC extends Game {
     static int currentMapPos = -1;
     SaveGame save;
     static boolean op = true;
+
     private Jogador jogador;
     private Animation<TextureRegion> player_animation;
 
-    private boolean moveUp;
-    private boolean moveDown;
-    private boolean moveLeft;
-    private boolean moveRight;
+    private boolean moveUp, moveDown, moveLeft, moveRight;
 
     @Override
     public void create() {
@@ -29,8 +27,9 @@ public class TCC extends Game {
         player_animation = jogador.getCurrentAnimation();
         ArrayList<Inimigo> ini = new ArrayList();
         ini.add(new Inimigo(new Sprite(new Texture(Gdx.files.internal("ske.png"))), 150, 200));
-        mapas.add(new Mapa(jogador, this, "Mapas/Level1.tmx", "player.png", 200, 150, ini));
-        //mapas.add(new Mapa(jogador, this, "Mapas/Level1.tmx", player_animation, 200, 150, ini));
+        //mapas.add(new Mapa(jogador, this, "Mapas/Level1.tmx", "player.png", 200, 150, ini));
+        mapas.add(new Mapa(jogador, this, "Mapas/Level1.tmx", player_animation, 200, 150, ini));
+
         this.setScreen(new Menu(this));
         Gdx.input.setInputProcessor(new InputProcessor(this));
     }
