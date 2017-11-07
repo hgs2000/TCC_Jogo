@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
@@ -21,17 +22,26 @@ public class Mapa extends ScreenAdapter {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-    private PlayerInGame player_sprite;
 
-    //
+    // <editor-fold defaultstate="collapsed" desc="Objetos relacionados ao jogador">
+    private PlayerInGame player_sprite;
+    private Animation<TextureRegion> player_anim;
+    private Jogador jogador;
+    private BitmapFont hpPlayer;
+    private BitmapFont lvPlayer;
+    //</editor-fold>
+
+    //Objetos relacionados ao mapa
+    private TiledMapTileLayer cLayer;
     private boolean[][] collision_map = {{false}, {false}};
-    //
     private String[][] collision_map_position = {{"null"}, {"null"}};
     //
-    private
+    //private
     //
 
-    private Animation<TextureRegion> player_anim;
+
+
+
     private SpriteBatch batch;
     private float state_time = 0f;
 
@@ -39,12 +49,9 @@ public class Mapa extends ScreenAdapter {
     private int moveX = 0;
     private int moveY = 0;
 
-    private TiledMapTileLayer cLayer;
+
     //private float tW, tH;
     private Sprite hud;
-    private Jogador jogador;
-    private BitmapFont hpPlayer;
-    private BitmapFont lvPlayer;
     private TCC game;
 
     //private String mapPath;
@@ -241,6 +248,10 @@ public class Mapa extends ScreenAdapter {
             TCC.currentMapPos += 1;
             game.setScreen(TCC.mapas.get(TCC.currentMapPos));
         }*/
+
+        checkCollision(camera.position);
+
+
         if (player_sprite != null) {
             for (Inimigo ini : inimigos) {
                 if (((ini.getX() - player_sprite.getX()) < 20) && ((ini.getX() - player_sprite.getX()) > -20)) {
@@ -362,6 +373,21 @@ public class Mapa extends ScreenAdapter {
             camera.update();
         }
 
+
+    }
+
+    private void checkCollision(Vector3 current_position) {
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
+        int x = (int) current_position.x, y = (int) current_position.y;
+        try {
+            if (layer.getCell(x, y).getTile().getProperties().get("solid") == true) {
+                System.out.println("Sake!");
+            } else {
+                System.out.println("Not Sake!");
+            }
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void setAnimation() {
