@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
@@ -29,17 +31,25 @@ public class Mapa extends ScreenAdapter {
     private Jogador jogador;
     private BitmapFont hpPlayer;
     private BitmapFont lvPlayer;
+
+    /**
+     * Como funciona o coisa abaixo:
+     * <p>
+     * [x - 32, y + 32][x, y + 32][x + 32, y + 32]
+     * [x - 32, y]     [x, y]     [x + 32, y]
+     * [x - 32, y - 32][x, y - 32][x + 32, y - 32]
+     */
+    private TiledMapTile[][] collisionArea = new TiledMapTile[3][3];
+
     //</editor-fold>
 
     //Objetos relacionados ao mapa
     private TiledMapTileLayer cLayer;
-    private boolean[][] collision_map = {{false}, {false}};
+    private boolean[][] collision_map = {{false}};
     private String[][] collision_map_position = {{"null"}, {"null"}};
     //
     //private
     //
-
-
 
 
     private SpriteBatch batch;
@@ -78,7 +88,8 @@ public class Mapa extends ScreenAdapter {
         this.cLayer = (TiledMapTileLayer) map.getLayers().get("Walls");
         this.collision_map = new boolean[this.cLayer.getWidth()][this.cLayer.getHeight()];
         //System.out.println(this.collision_map.length);
-        startCollisions();
+        //startCollisions();
+
     }
 
     private void startCollisions() {
@@ -87,6 +98,7 @@ public class Mapa extends ScreenAdapter {
             for (int x = 0; x < this.collision_map[y].length; x++) {
                 try {
                     keys = cLayer.getCell(x, y).getTile().getProperties();
+                    System.out.println("test_solid");
                     //System.out.println(keys.get("solid"));
                     if ((boolean) (keys.get("solid")) == true) {
                         //System.out.println("yes");
@@ -95,8 +107,9 @@ public class Mapa extends ScreenAdapter {
                 } catch (NullPointerException ex) {
                     keys = null;
                     System.out.println("false");
+                    ex.printStackTrace();
                 }
-                collision_map_position[x - 1][y - 1] = "" + "";
+                //collision_map_position[x][y] = "" + "";
             }
         }
     }
@@ -111,7 +124,7 @@ public class Mapa extends ScreenAdapter {
         this.playerStartY = playerStartY;
         this.inimigos = inimigos;
         this.batch = new SpriteBatch();
-        startCollisions();
+        //startCollisions();
     }
 
     @Override
@@ -249,7 +262,8 @@ public class Mapa extends ScreenAdapter {
             game.setScreen(TCC.mapas.get(TCC.currentMapPos));
         }*/
 
-        checkCollision(camera.position);
+        //checkCollision(camera.position);
+        collisionAreaUpdate(camera.position);
 
 
         if (player_sprite != null) {
@@ -345,8 +359,13 @@ public class Mapa extends ScreenAdapter {
             renderer.render();
 
             TextureRegion curPlayerFrame = jogador.getCurrentAnimation().getKeyFrame(state_time, true);
+            Vector3 player_pos = new Vector3(Gdx.graphics.getWidth() / 2 - curPlayerFrame.getRegionWidth() / 2, Gdx.graphics.getHeight() / 2 - curPlayerFrame.getRegionHeight() / 2, 0);
+
             batch.begin();
+
             batch.draw(jogador.getCurrentAnimation().getKeyFrame(state_time, true), Gdx.graphics.getWidth() / 2 - curPlayerFrame.getRegionWidth() / 2, Gdx.graphics.getHeight() / 2 - curPlayerFrame.getRegionHeight() / 2, 75, 75);
+            hpPlayer.draw(batch, "Hello World", 50, 50);
+            player_anim.setPlayMode(Animation.PlayMode.REVERSED);
             batch.end();
 
             if (game.isMoveDown() == true && game.isMoveUp() == true) {
@@ -376,17 +395,52 @@ public class Mapa extends ScreenAdapter {
 
     }
 
+    private void collisionAreaUpdate(Vector3 current_position) {
+        
+        int x = (int) current_position.x, y = (int) current_position.y;
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
+        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+        try {
+            collisionArea[0][0] = layer.getCell(x - 32, y + 32).getTile(); //1
+            collisionArea[0][1] = layer.getCell(x, y + 32).getTile();//2
+            collisionArea[0][2] = layer.getCell(x + 32, y + 32).getTile();//3
+            collisionArea[1][0] = layer.getCell(x - 32, y).getTile();//4
+            collisionArea[1][1] = layer.getCell(x, y).getTile();//5
+            collisionArea[1][2] = layer.getCell(x + 32, y).getTile();//6
+            collisionArea[2][0] = layer.getCell(x - 32, y - 32).getTile();//7
+            collisionArea[2][1] = layer.getCell(x, y - 32).getTile();//8
+            collisionArea[2][2] = layer.getCell(x + 32, y - 32).getTile();//9
+
+            for (int linha = 0; linha < collisionArea.length; linha++) {
+                for (int coluna = 0; coluna < collisionArea[linha].length; coluna++) {
+                    if ((boolean) collisionArea[linha][coluna].getProperties().get("solid")) {
+                        System.out.println("Chegou aqui (somehow)");
+                    }
+                }
+            }
+        } catch (NullPointerException ex) {
+            System.out.println("No no no");
+        }
+    }
+
     private void checkCollision(Vector3 current_position) {
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
         int x = (int) current_position.x, y = (int) current_position.y;
         try {
-            if (layer.getCell(x, y).getTile().getProperties().get("solid") == true) {
+            //if (layer.getCell(x+ 1, y).getTile().getProperties().get("solid"))
+
+
+            System.out.println(x + ":" + y);
+            TiledMapTileLayer.Cell cell = layer.getCell(x + 1, y);
+            if ((Boolean) cell.getTile().getProperties().get("solid")) {
                 System.out.println("Sake!");
+
             } else {
                 System.out.println("Not Sake!");
             }
         } catch (NullPointerException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
+            System.out.println("Not Sake!");
         }
     }
 
