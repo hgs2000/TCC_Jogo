@@ -1,10 +1,9 @@
 package br.edu.ifc.blumenau.woworlds.desktop;
 
-import br.edu.ifc.blumenau.woworlds.core.MainGame;
-import br.edu.ifc.blumenau.woworlds.core.Patched.GameStart;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import scene2d.Jogo;
 
 public class DesktopGameTest {
 
@@ -18,7 +17,7 @@ public class DesktopGameTest {
         config.useHDPI = true;
         config.foregroundFPS = 30;
         config.addIcon("icon.png", Files.FileType.Internal);
-        new LwjglApplication(new MainGame(), config);
+        new LwjglApplication(new Jogo(), config);
         //248, 74
     }
 

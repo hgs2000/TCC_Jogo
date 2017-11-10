@@ -100,7 +100,7 @@ public class Mapa extends ScreenAdapter {
         this.playerStartY = playerStartY;
         this.inimigos = inimigos;
         this.batch = new SpriteBatch();
-        this.collision_layer = (TiledMapTileLayer) map.getLayers().get("Walls");
+        this.collision_layer = (TiledMapTileLayer) map.getLayers().get(0);
         //startCollisions();
     }
 
@@ -147,6 +147,13 @@ public class Mapa extends ScreenAdapter {
         curPlayerFrame = jogador.getCurrentAnimation().getKeyFrame(state_time, true);
         player_pos = new Vector3(Gdx.graphics.getWidth() / 2 - curPlayerFrame.getRegionWidth() / 2, Gdx.graphics.getHeight() / 2 - curPlayerFrame.getRegionHeight() / 2, 0);
 
+        /*for (int x = 0; x < collision_layer.getWidth(); x++) {
+            System.out.println("InicioColuna " + x);
+            for (int y = 0; y < collision_layer.getHeight(); y++) {
+                System.out.println("InicioLinha " + y);
+                System.out.println(collision_layer.getCell(x, y).getTile().getProperties());
+            }
+        }*/
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters e Setters MoveX e MoveY">
@@ -287,7 +294,7 @@ public class Mapa extends ScreenAdapter {
             player_anim.setPlayMode(Animation.PlayMode.REVERSED);
             batch.end();
 
-            boolean wallUp = getCollisao(1);
+            boolean wallUp = getColisao(1);
             //boolean wallLeft = getCollisao(2);
             //boolean wallDown = getCollisao(3);
             //boolean wallRight = getCollisao(4);
@@ -348,17 +355,14 @@ public class Mapa extends ScreenAdapter {
         }
     }
 
-    private boolean getCollisao(int i) {
+    private boolean getColisao(int i) {
 
         TiledMapTile next;
         try {
             switch (i) {
                 case 1:
-                    next = ((TiledMapTileLayer) collision_layer).getCell((int) (player_pos.x + moveX), (int) player_pos.y).getTile();
-                //if () {
-                //    return false;
-                //}
-
+                //next = (collision_layer).getCell((int) (player_pos.x + moveX), (int) player_pos.y).getTile();
+                //System.out.println(next.getProperties().get("solid", Boolean.class));
                 case 2:
                 case 3:
                 case 4:
@@ -368,7 +372,7 @@ public class Mapa extends ScreenAdapter {
 
             //next = collision_layer.getCell((int) (player_pos.x + jogador.getVelocidade()), (int) player_pos.y).getTile();}
         } catch (Exception e) {
-            System.out.println("Tile null");
+            e.printStackTrace();
             return false;
         }
     }
