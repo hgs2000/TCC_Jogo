@@ -19,7 +19,7 @@ public class TCC extends Game {
     private Jogador jogador;
     private Animation<TextureRegion> player_animation;
 
-    private boolean moveUp, moveDown, moveLeft, moveRight;
+    private boolean moveUp = true, moveDown = true, moveLeft = true, moveRight = true;
 
     @Override
     public void create() {
@@ -30,7 +30,7 @@ public class TCC extends Game {
         //mapas.add(new Mapa(jogador, this, "Mapas/Level1.tmx", "player.png", 200, 150, ini));
         mapas.add(new Mapa(jogador, this, "Mapas/Level1.tmx", player_animation, 200, 150, ini));
 
-        //this.setScreen(new Menu(this));
+        this.setScreen(new Menu(this));
         //this.setScreen(new Level());
         Gdx.input.setInputProcessor(new InputProcessor(this));
     }

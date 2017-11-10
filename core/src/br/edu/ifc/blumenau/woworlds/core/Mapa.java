@@ -1,5 +1,6 @@
 package br.edu.ifc.blumenau.woworlds.core;
 
+//<editor-fold defaultstate="collapsed" desc="Importações">
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -13,14 +14,14 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
+//</editor-fold>
 
 public class Mapa extends ScreenAdapter {
 
-    //Declaração variáveis
+    //<editor-fold defaultstate="collapsed" desc="Declaração variáveis">
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -35,14 +36,12 @@ public class Mapa extends ScreenAdapter {
     /**
      * Como funciona o coisa abaixo:
      * <p>
-     * [x - 32, y + 32][x, y + 32][x + 32, y + 32]
-     * [x - 32, y]     [x, y]     [x + 32, y]
-     * [x - 32, y - 32][x, y - 32][x + 32, y - 32]
+     * [x - 32, y + 32][x, y + 32][x + 32, y + 32] [x - 32, y] [x, y] [x + 32,
+     * y] [x - 32, y - 32][x, y - 32][x + 32, y - 32]
      */
     private TiledMapTile[][] collisionArea = new TiledMapTile[3][3];
 
     //</editor-fold>
-
     //Objetos relacionados ao mapa
     private TiledMapTileLayer cLayer;
     private boolean[][] collision_map = {{false}};
@@ -51,14 +50,11 @@ public class Mapa extends ScreenAdapter {
     //private
     //
 
-
     private SpriteBatch batch;
     private float state_time = 0f;
 
-
     private int moveX = 0;
     private int moveY = 0;
-
 
     //private float tW, tH;
     private Sprite hud;
@@ -74,6 +70,7 @@ public class Mapa extends ScreenAdapter {
     private boolean cX = false, cY = false, portal = false;
     //private boolean directX, directY;//true +; false -
     //===========================
+//</editor-fold>
 
     public Mapa(Jogador ps, TCC game, String mapPath, String playerImg, int playerStartX, int playerStartY, ArrayList<Inimigo> inimigos) {
         this.jogador = ps;
@@ -90,28 +87,6 @@ public class Mapa extends ScreenAdapter {
         //System.out.println(this.collision_map.length);
         //startCollisions();
 
-    }
-
-    private void startCollisions() {
-        MapProperties keys;
-        for (int y = 0; y < this.collision_map.length; y++) {
-            for (int x = 0; x < this.collision_map[y].length; x++) {
-                try {
-                    keys = cLayer.getCell(x, y).getTile().getProperties();
-                    System.out.println("test_solid");
-                    //System.out.println(keys.get("solid"));
-                    if ((boolean) (keys.get("solid")) == true) {
-                        //System.out.println("yes");
-                        this.collision_map[y][x] = true;
-                    }
-                } catch (NullPointerException ex) {
-                    keys = null;
-                    System.out.println("false");
-                    ex.printStackTrace();
-                }
-                //collision_map_position[x][y] = "" + "";
-            }
-        }
     }
 
     public Mapa(Jogador ps, TCC game, String mapPath, Animation<TextureRegion> player, int playerStartX, int playerStartY, ArrayList<Inimigo> inimigos) {
@@ -260,13 +235,11 @@ public class Mapa extends ScreenAdapter {
         if (portal) {
             TCC.currentMapPos += 1;
             game.setScreen(TCC.mapas.get(TCC.currentMapPos));
-        }*/
-
-        //checkCollision(camera.position);
-        collisionAreaUpdate(camera.position);
-
+        }  */
+        checkCollision(camera.position);
 
         if (player_sprite != null) {
+            /*
             for (Inimigo ini : inimigos) {
                 if (((ini.getX() - player_sprite.getX()) < 20) && ((ini.getX() - player_sprite.getX()) > -20)) {
                     if (((ini.getY() - player_sprite.getY()) < 20) && ((ini.getY() - player_sprite.getY()) > -20)) {
@@ -291,8 +264,8 @@ public class Mapa extends ScreenAdapter {
                 }
                 if (inimigos.get(i).vida <= 0) {
                     inimigos.remove(i);
-                /*inimigos.get(i).vida = 5;
-                inimigos.get(i).setPosition(100, 150);*/
+                    /*inimigos.get(i).vida = 5;
+                inimigos.get(i).setPosition(100, 150);
                     jogador.addXP(1);
                     jogador.getCurrentLevel();
                 }
@@ -322,7 +295,6 @@ public class Mapa extends ScreenAdapter {
             //Fim muda animação </editor-fold>
 
             //System.out.println(delta);
-
             camera.position.x += getMoveX();
             camera.position.y += getMoveY();
 
@@ -347,7 +319,7 @@ public class Mapa extends ScreenAdapter {
             lvPlayer.draw(batch, "Level" + Integer.toString(jogador.getNivel()), 10, 100);
             player_sprite.draw(batch);
             hud.draw(batch);
-            batch.end();
+            batch.end();*/
         } else {
             //System.out.println("Ok");
             Gdx.gl20.glClearColor(0, 0, 0, 1);
@@ -392,35 +364,6 @@ public class Mapa extends ScreenAdapter {
             camera.update();
         }
 
-
-    }
-
-    private void collisionAreaUpdate(Vector3 current_position) {
-
-        int x = (int) current_position.x, y = (int) current_position.y;
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
-        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
-        try {
-            collisionArea[0][0] = layer.getCell(x - 32, y + 32).getTile(); //1
-            collisionArea[0][1] = layer.getCell(x, y + 32).getTile();//2
-            collisionArea[0][2] = layer.getCell(x + 32, y + 32).getTile();//3
-            collisionArea[1][0] = layer.getCell(x - 32, y).getTile();//4
-            collisionArea[1][1] = layer.getCell(x, y).getTile();//5
-            collisionArea[1][2] = layer.getCell(x + 32, y).getTile();//6
-            collisionArea[2][0] = layer.getCell(x - 32, y - 32).getTile();//7
-            collisionArea[2][1] = layer.getCell(x, y - 32).getTile();//8
-            collisionArea[2][2] = layer.getCell(x + 32, y - 32).getTile();//9
-
-            for (int linha = 0; linha < collisionArea.length; linha++) {
-                for (int coluna = 0; coluna < collisionArea[linha].length; coluna++) {
-                    if ((boolean) collisionArea[linha][coluna].getProperties().get("solid")) {
-                        System.out.println("Chegou aqui (somehow)");
-                    }
-                }
-            }
-        } catch (NullPointerException ex) {
-            System.out.println("No no no");
-        }
     }
 
     private void checkCollision(Vector3 current_position) {
@@ -429,18 +372,17 @@ public class Mapa extends ScreenAdapter {
         try {
             //if (layer.getCell(x+ 1, y).getTile().getProperties().get("solid"))
 
-
             System.out.println(x + ":" + y);
             TiledMapTileLayer.Cell cell = layer.getCell(x + 1, y);
             if ((Boolean) cell.getTile().getProperties().get("solid")) {
                 System.out.println("Sake!");
 
             } else {
-                System.out.println("Not Sake!");
+                System.out.println("Not Sake! (working)");
             }
         } catch (NullPointerException ex) {
             //ex.printStackTrace();
-            System.out.println("Not Sake!");
+            System.out.println("Not Sake! (not working)");
         }
     }
 
@@ -474,17 +416,24 @@ public class Mapa extends ScreenAdapter {
         }
     }
 
-    private boolean canMovePlayer(float delta) {
+    private void canMovePlayer(float delta) {
         boolean canUp = true, canDown = true, canLeft = true, canRight = true;
-        boolean collisionBlock[][] = new boolean[3][3];
 
-        if (player_sprite.getY() + (60 * 1.8f * delta) == 1) {
-            System.out.println("Collision");
-        }
+        if (getMoveX() > 0) {
+            if (((TiledMapTileLayer) map.getLayers().get("Walls")).getCell((int) (moveX + jogador.getVelocidade()), moveY).getTile().getProperties().get("solid", Boolean.class)) {
+                game.setMoveRight(false);
+            }
+            if (((TiledMapTileLayer) map.getLayers().get("Walls")).getCell((int) (moveX + jogador.getVelocidade()), moveY).getTile().getProperties().get("solid", Boolean.class)) {
+                game.setMoveLeft(false);
+            }
+            if (((TiledMapTileLayer) map.getLayers().get("Walls")).getCell((int) (moveX + jogador.getVelocidade()), moveY).getTile().getProperties().get("solid", Boolean.class)) {
+                game.setMoveUp(false);
+            }
+            if (((TiledMapTileLayer) map.getLayers().get("Walls")).getCell((int) (moveX + jogador.getVelocidade()), moveY).getTile().getProperties().get("solid", Boolean.class)) {
+                game.setMoveRight(false);
+            }
+        } else {
 
-        if (canUp && canDown && canLeft && canRight && false) {
-            return false;
         }
-        return true;
     }
 }
