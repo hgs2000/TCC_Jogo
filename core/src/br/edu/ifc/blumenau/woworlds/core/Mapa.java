@@ -396,7 +396,7 @@ public class Mapa extends ScreenAdapter {
     }
 
     private void collisionAreaUpdate(Vector3 current_position) {
-        
+
         int x = (int) current_position.x, y = (int) current_position.y;
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
         TiledMapTileLayer.Cell cell = layer.getCell(x, y);
