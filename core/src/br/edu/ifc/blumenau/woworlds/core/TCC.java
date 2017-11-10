@@ -19,7 +19,7 @@ public class TCC extends Game {
     private Jogador jogador;
     private Animation<TextureRegion> player_animation;
 
-    private boolean moveUp = true, moveDown = true, moveLeft = true, moveRight = true;
+    private boolean moveUp = false, moveDown = false, moveLeft = false, moveRight = false;
 
     @Override
     public void create() {

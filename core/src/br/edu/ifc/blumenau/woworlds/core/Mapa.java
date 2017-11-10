@@ -4,16 +4,20 @@ package br.edu.ifc.blumenau.woworlds.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
@@ -30,8 +34,8 @@ public class Mapa extends ScreenAdapter {
     private PlayerInGame player_sprite;
     private Animation<TextureRegion> player_anim;
     private Jogador jogador;
-    private BitmapFont hpPlayer;
-    private BitmapFont lvPlayer;
+    private Vector3 player_pos;
+    private TextureRegion curPlayerFrame;
 
     /**
      * Como funciona o coisa abaixo:
@@ -41,14 +45,12 @@ public class Mapa extends ScreenAdapter {
      */
     private TiledMapTile[][] collisionArea = new TiledMapTile[3][3];
 
+    private BitmapFont texto16;
+    private BitmapFont texto32;
+
     //</editor-fold>
-    //Objetos relacionados ao mapa
-    private TiledMapTileLayer cLayer;
-    private boolean[][] collision_map = {{false}};
-    private String[][] collision_map_position = {{"null"}, {"null"}};
-    //
-    //private
-    //
+    //<editor-fold desc="Objetos relacionados ao mapa"> 
+    private TiledMapTileLayer collision_layer;
 
     private SpriteBatch batch;
     private float state_time = 0f;
@@ -70,7 +72,7 @@ public class Mapa extends ScreenAdapter {
     private boolean cX = false, cY = false, portal = false;
     //private boolean directX, directY;//true +; false -
     //===========================
-//</editor-fold>
+    //</editor-fold>
 
     public Mapa(Jogador ps, TCC game, String mapPath, String playerImg, int playerStartX, int playerStartY, ArrayList<Inimigo> inimigos) {
         this.jogador = ps;
@@ -82,8 +84,7 @@ public class Mapa extends ScreenAdapter {
         this.playerStartY = playerStartY;
         this.inimigos = inimigos;
         this.batch = new SpriteBatch();
-        this.cLayer = (TiledMapTileLayer) map.getLayers().get("Walls");
-        this.collision_map = new boolean[this.cLayer.getWidth()][this.cLayer.getHeight()];
+        this.collision_layer = (TiledMapTileLayer) map.getLayers().get("Walls");
         //System.out.println(this.collision_map.length);
         //startCollisions();
 
@@ -99,6 +100,7 @@ public class Mapa extends ScreenAdapter {
         this.playerStartY = playerStartY;
         this.inimigos = inimigos;
         this.batch = new SpriteBatch();
+        this.collision_layer = (TiledMapTileLayer) map.getLayers().get("Walls");
         //startCollisions();
     }
 
@@ -123,11 +125,27 @@ public class Mapa extends ScreenAdapter {
             ini.setPosition(ini.x, ini.y);
         }
 
-        hpPlayer = new BitmapFont();
-        hpPlayer.getData().setScale(1, 1);
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Millennium-Regular_0.ttf"));
 
-        lvPlayer = new BitmapFont();
-        lvPlayer.getData().setScale(1, 1);
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+
+        parameter.borderWidth = 2;
+        parameter.borderColor = Color.BLACK;
+        parameter.magFilter = Texture.TextureFilter.Nearest;
+        parameter.size = 16;
+
+        texto16 = generator.generateFont(parameter);
+        texto16.getData().setScale(1);
+
+        parameter.size = 32;
+
+        texto32 = generator.generateFont(parameter);
+        texto32.getData().setScale(1);
+
+        generator.dispose();
+
+        curPlayerFrame = jogador.getCurrentAnimation().getKeyFrame(state_time, true);
+        player_pos = new Vector3(Gdx.graphics.getWidth() / 2 - curPlayerFrame.getRegionWidth() / 2, Gdx.graphics.getHeight() / 2 - curPlayerFrame.getRegionHeight() / 2, 0);
 
     }
 
@@ -151,93 +169,16 @@ public class Mapa extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        /*oldX = player.getX();
-        oldY = player.getY();
         if ((Gdx.input.isKeyPressed(Input.Keys.U)) && (Gdx.input.isKeyPressed(Input.Keys.P))) {
             jogador.setVida(100000);
         }
-        if (game.isMoveUp()) {
-            player_sprite.setY(player_sprite.getY() + jogador.getVelocidade());
-            //directY = true;
-        }
-        if (game.isMoveDown()) {
-            player_sprite.setY(player_sprite.getY() - jogador.getVelocidade());
-            //directY = false;
-        }
-        if (game.isMoveRight()) {
-            player_sprite.setX(player_sprite.getX() + jogador.getVelocidade());
-            //directX = true;
-        }
-        if (game.isMoveLeft()) {
-            player_sprite.setX(player_sprite.getX() - jogador.getVelocidade());
-            //directX = false;
-        }
-        try {
-            //colisão
-            //top left
-            if (!directX) {
 
-                cX = cLayer.getCell((int) (player.getX() / tW), (int) ((player.getY() + player.getHeight()) / tW)).getTile().getProperties().containsKey("solid");
-                portal = cLayer.getCell((int) (player.getX() / tW), (int) ((player.getY() + player.getHeight()) / tW)).getTile().getProperties().containsKey("portal");
-
-                //meio left
-                if (!cX) {
-                    cX = cLayer.getCell((int) (player.getX() / tW), (int) ((player.getY() + player.getHeight() / 2) / tH)).getTile().getProperties().containsKey("solid");
-                }
-                //baixo left
-                if (!cX) {
-                    cX = cLayer.getCell((int) (player.getX() / tW), (int) (player.getY() / tH)).getTile().getProperties().containsKey("solid");
-                }
-            } else if (directX) {
-                //top right
-                cX = cLayer.getCell((int) ((player.getX() + player.getWidth()) / tW), (int) ((player.getY() + player.getHeight()) / tH)).getTile().getProperties().containsKey("solid");
-                //meio right
-                if (!cX) {
-                    cX = cLayer.getCell((int) ((player.getX() + player.getWidth()) / tW), (int) ((player.getY() + player.getWidth() / 2) / tH)).getTile().getProperties().containsKey("solid");
-                }
-                //baixo right
-                if (!cX) {
-                    cX = cLayer.getCell((int) ((player.getX() + player.getWidth()) / tW), (int) ((player.getY()) / tW)).getTile().getProperties().containsKey("solid");
-                }
-            }
-            if (!directY) {
-                cY = cLayer.getCell((int) (player.getX() / tW), (int) (player.getY() / tH)).getTile().getProperties().containsKey("solid");
-                if (!cY) {
-                    cY = cLayer.getCell((int) ((player.getX() + player.getWidth() / 2) / tW), (int) (player.getY() / tH)).getTile().getProperties().containsKey("solid");
-                }
-
-                if (!cY) {
-                    //cY = cLayer.getCell((int) ((player.getX() + player.getWidth()) / tW), (int) (player.getY() / tH)).getTile().getProperties().containsKey("solid");
-                }
-
-            } else if (directY) {
-                cY = cLayer.getCell((int) (player.getX() / tW), (int) ((player.getY() + player.getHeight()) / tH)).getTile().getProperties().containsKey("solid");
-
-                if (!cY) {
-                    cY = cLayer.getCell((int) ((player.getX() + player.getWidth() / 2) / tW), (int) ((player.getY() + player.getHeight()) / tH)).getTile().getProperties().containsKey("solid");
-                }
-                if (!cY) {
-                    cY = cLayer.getCell((int) ((player.getX() + player.getWidth()) / tW), (int) ((player.getY() + player.getHeight()) / tH)).getTile().getProperties().containsKey("solid");
-                }
-            }
-            //end colisão
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (cX) {
-            cX = false;
-            player.setX(oldX);
-        }
-        if (cY) {
-            cY = false;
-            player.setY(oldY);
-        }
         if (portal) {
             TCC.currentMapPos += 1;
             game.setScreen(TCC.mapas.get(TCC.currentMapPos));
-        }  */
-        checkCollision(camera.position);
+        }
 
+        //checkCollision(camera.position);
         if (player_sprite != null) {
             /*
             for (Inimigo ini : inimigos) {
@@ -330,16 +271,26 @@ public class Mapa extends ScreenAdapter {
             renderer.setView(camera);
             renderer.render();
 
-            TextureRegion curPlayerFrame = jogador.getCurrentAnimation().getKeyFrame(state_time, true);
-            Vector3 player_pos = new Vector3(Gdx.graphics.getWidth() / 2 - curPlayerFrame.getRegionWidth() / 2, Gdx.graphics.getHeight() / 2 - curPlayerFrame.getRegionHeight() / 2, 0);
+            curPlayerFrame = jogador.getCurrentAnimation().getKeyFrame(state_time, true);
 
+            player_pos.x = Gdx.graphics.getWidth() / 2 - curPlayerFrame.getRegionWidth() / 2;
+            player_pos.y = Gdx.graphics.getHeight() / 2 - curPlayerFrame.getRegionHeight() / 2;
+
+            //canMovePlayer(delta);
             batch.begin();
+            Vector2 centro_tela = new Vector2(Gdx.graphics.getWidth() / 2 - curPlayerFrame.getRegionWidth() / 2, Gdx.graphics.getHeight() / 2 - curPlayerFrame.getRegionHeight() / 2);
+            Vector2 tamanho_personagens = new Vector2(75, 75);
+            batch.draw(jogador.getCurrentAnimation().getKeyFrame(state_time, true), centro_tela.x, centro_tela.y, 75, 75);
 
-            batch.draw(jogador.getCurrentAnimation().getKeyFrame(state_time, true), Gdx.graphics.getWidth() / 2 - curPlayerFrame.getRegionWidth() / 2, Gdx.graphics.getHeight() / 2 - curPlayerFrame.getRegionHeight() / 2, 75, 75);
-            hpPlayer.draw(batch, "Hello World", 50, 50);
+            texto16.draw(batch, "Hello World", 50, 100);
+            texto32.draw(batch, "XP atual: ", 50, 50);
             player_anim.setPlayMode(Animation.PlayMode.REVERSED);
             batch.end();
 
+            boolean wallUp = getCollisao(1);
+            //boolean wallLeft = getCollisao(2);
+            //boolean wallDown = getCollisao(3);
+            //boolean wallRight = getCollisao(4);
             if (game.isMoveDown() == true && game.isMoveUp() == true) {
                 setMoveY(0);
             } else if (game.isMoveDown() == true && game.isMoveUp() == false) {
@@ -359,31 +310,12 @@ public class Mapa extends ScreenAdapter {
             } else {
                 setMoveX(getMoveX() - getMoveX());
             }
+
             setAnimation();
             camera.translate(getMoveX(), getMoveY());
             camera.update();
         }
 
-    }
-
-    private void checkCollision(Vector3 current_position) {
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
-        int x = (int) current_position.x, y = (int) current_position.y;
-        try {
-            //if (layer.getCell(x+ 1, y).getTile().getProperties().get("solid"))
-
-            System.out.println(x + ":" + y);
-            TiledMapTileLayer.Cell cell = layer.getCell(x + 1, y);
-            if ((Boolean) cell.getTile().getProperties().get("solid")) {
-                System.out.println("Sake!");
-
-            } else {
-                System.out.println("Not Sake! (working)");
-            }
-        } catch (NullPointerException ex) {
-            //ex.printStackTrace();
-            System.out.println("Not Sake! (not working)");
-        }
     }
 
     private void setAnimation() {
@@ -416,24 +348,28 @@ public class Mapa extends ScreenAdapter {
         }
     }
 
-    private void canMovePlayer(float delta) {
-        boolean canUp = true, canDown = true, canLeft = true, canRight = true;
+    private boolean getCollisao(int i) {
 
-        if (getMoveX() > 0) {
-            if (((TiledMapTileLayer) map.getLayers().get("Walls")).getCell((int) (moveX + jogador.getVelocidade()), moveY).getTile().getProperties().get("solid", Boolean.class)) {
-                game.setMoveRight(false);
-            }
-            if (((TiledMapTileLayer) map.getLayers().get("Walls")).getCell((int) (moveX + jogador.getVelocidade()), moveY).getTile().getProperties().get("solid", Boolean.class)) {
-                game.setMoveLeft(false);
-            }
-            if (((TiledMapTileLayer) map.getLayers().get("Walls")).getCell((int) (moveX + jogador.getVelocidade()), moveY).getTile().getProperties().get("solid", Boolean.class)) {
-                game.setMoveUp(false);
-            }
-            if (((TiledMapTileLayer) map.getLayers().get("Walls")).getCell((int) (moveX + jogador.getVelocidade()), moveY).getTile().getProperties().get("solid", Boolean.class)) {
-                game.setMoveRight(false);
-            }
-        } else {
+        TiledMapTile next;
+        try {
+            switch (i) {
+                case 1:
+                    next = ((TiledMapTileLayer) collision_layer).getCell((int) (player_pos.x + moveX), (int) player_pos.y).getTile();
+                //if () {
+                //    return false;
+                //}
 
+                case 2:
+                case 3:
+                case 4:
+                default:
+                    return false;
+            }
+
+            //next = collision_layer.getCell((int) (player_pos.x + jogador.getVelocidade()), (int) player_pos.y).getTile();}
+        } catch (Exception e) {
+            System.out.println("Tile null");
+            return false;
         }
     }
 }
